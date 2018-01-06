@@ -69,13 +69,32 @@ public:
 	void createBlock()						//Create the block
 	{
 		current_block.randomShape();
-		//current_block.set_CurrentX(BOARD_WIDTH / 2); 
-		//current_block.set_CurrentY(BOARD_HEIGHT - 1);
+		current_block.set_CurrentX(BOARD_WIDTH / 2); 
+		current_block.set_CurrentY(BOARD_HEIGHT - 1);
 
+		if (!tryMove(current_block, current_block.get_CurrentX(), current_block.get_CurrentY()))
+		{
+			current_block.setBlockShape(TetrisBlock::Blocks::No_shape);
+			//timer.stop();
+			started = false;
+			//Gameover.
+		}
 	}
-	bool tryMove()							//Check if the block is movable.
+	bool tryMove(TetrisBlock block, int newX, int newY)							//Check if the block is movable.
 	{
-
+		for (size_t i = 0; i < 4; i++)
+		{
+			int x = newX + block.get_X(i);
+			int y = newY + block.get_Y(i);
+			if (x < 0 || x>BOARD_WIDTH || y < 0 || y >= BOARD_HEIGHT)
+				return false;
+			//
+		}
+		current_block = block;
+		current_block.set_CurrentX(newX);
+		current_block.set_CurrentY(newY);
+		//repaint?
+		return true;
 	}
 	bool fall()							//Block falling.
 	{
@@ -90,7 +109,7 @@ public:
 			BottomDetection();
 			break;
 		case 'd':				//right
-								//
+								//w
 			BottomDetection();
 			break;
 		case 's':				//down+speed
@@ -120,7 +139,7 @@ public:
 
 	bool BottomDetection()					//Check if block touches bottom.
 	{
-
+	
 	}
 	bool GameOver()							//Check if game is over or not.
 	{
@@ -150,9 +169,6 @@ private:
 
 	int LinesRemoved = 0;
 	int Score = 0;
-
-	//int[][] coords;
-	//int[][][] coordsTable;
 
 };
 
@@ -234,15 +250,30 @@ public:
 
 		setBlockShape(shape);
 	}
-	void set_CurrentX(int index, int x)
+	void set_CurrentX(int x)
 	{
-
+		Current_X = x;
 	}
-	void set_CurrentY(int index, int y)
+	void set_CurrentY(int y)
 	{
-
+		Current_Y = y;
 	}
-
+	int get_CurrentX()
+	{
+		return Current_X;
+	}
+	int get_CurrentY()
+	{
+		return Current_Y;
+	}
+	int get_X(int index)
+	{
+		return coord[index][0];
+	}
+	int get_Y(int index)
+	{
+		return coord[index][1];
+	}
 private:
 	Blocks block_shape;
 	int coord[4][2];
