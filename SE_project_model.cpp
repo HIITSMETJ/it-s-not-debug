@@ -203,7 +203,6 @@ public:
 private:
 
 };
-
 class TetrisBoard
 {
 public:
@@ -232,7 +231,7 @@ public:
 			{ ( 0,-1),( 0, 0),(-1, 0),(-1, 1) },
 			{ (-1,-1),( 0,-1),(-1, 0),( 0, 0) },
 			{ (-1,-1),(-1, 0),( 0, 0),(-1, 1) },
-			{ (-1,-1),(-1, 0),(-1, 1),(-1, 2) }
+			{ ( 0, 0),( 0, 1),( 0, 2),( 0, 3) }
 		};
 		setBlockShape((Blocks)No_shape);
 	}
@@ -274,6 +273,14 @@ public:
 	{
 		return Current_Y;
 	}
+	void set_X(int index, int x)
+	{
+		coord[index][0] = x;
+	}
+	void set_Y(int index, int y)
+	{
+		coord[index][1] = y;
+	}
 	int get_X(int index)
 	{
 		return coord[index][0];
@@ -298,7 +305,12 @@ public:
 	}
 	void rotate()
 	{
-
+		for (size_t i = 0; i < 4; i++)
+		{
+			int tmp = get_X(i);
+			set_X(i, get_Y(i));
+			set_Y(i, tmp);
+		}
 	}
 private:
 	Blocks block_shape;
