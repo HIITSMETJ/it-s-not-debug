@@ -89,7 +89,8 @@ public class TetrisModel
         {
             int x = newX + block.get_X(i);
             int y = newY + block.get_Y(i);
-            if (x < 0 || x > BOARD_WIDTH || y < 0 || y >= BOARD_HEIGHT)
+            if (board[x][y]) return false;                                              //cant put curBlock on exist blocks
+            if (x < 0 || x > BOARD_WIDTH || y < 0 || y >= BOARD_HEIGHT)                 //block out of board
                 return false;
             //
         }
@@ -101,7 +102,16 @@ public class TetrisModel
     }
     public bool fall()                                                                  //Block falling per time unit
     {
-
+        if (!tryMove(current_block, current_block.get_CurrentX(), current_block.get_CurrentY() + 1))
+        {
+            for (size_t i = 0; i < 4; i++)
+            {
+                int x = newX + block.get_X(i);
+                int y = newY + block.get_Y(i);
+                if (y == constant.BOARD_HEIGHT - 1) toBottom = true;
+            }
+            GameAction();
+        }
     }
     public void moveBlock(char control)                                                 //Change the block for either move or spin
     {
