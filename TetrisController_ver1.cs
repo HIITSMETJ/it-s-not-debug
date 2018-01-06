@@ -8,14 +8,22 @@ using TetrisModel.cs;
 
 public class TetrisController
 {
-	public TetrisController(TetrisModel* model, int board_width, int board_height)
+    static public System.Windows.Forms.Timer myTimer = new System.Windows.Forms.Timer();
+    private TetrisModel model;
+
+    public TetrisController(TetrisModel* model, int board_width, int board_height)
 	{
 
 	}
     private TetrisModel* model = new TetrisModel();
     public start()
     {
-       while(true)
+        model.start();
+        myTimer.Interval = 1500;
+        myTimer.Enabled = true;
+        timer.Tick += new EventHandler(MyTimerTick);
+        myTimer.Start();
+        while (true)
         {  //讀取user透過鍵盤對方塊下的指令
            if (_kbhit())
            {
@@ -24,20 +32,26 @@ public class TetrisController
            }
        }
     }
-    public class Timer
+    private static void myTimer_Tick(Object myObject, EventArgs myEventArgs)
     {
-        public	Timer()
-        {
+        model.fall();
+    }
 
-        }
-        public void start()
-        {
+    //no need
+    //public class Timer
+    //{
+    //    public	Timer()
+    //    {
 
-        }
+    //    }
+    //    public void start()
+    //    {
+
+    //    }
         
-        public void reset()
-        {
+    //    public void reset()
+    //    {
 
-        }
-    };
+    //    }
+    //};
 }
