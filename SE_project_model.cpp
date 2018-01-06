@@ -68,6 +68,9 @@ public:
 	}
 	void createBlock()						//Create the block
 	{
+		current_block.randomShape();
+		//current_block.set_CurrentX(BOARD_WIDTH / 2);
+		//current_block.set_CurrentY(BOARD_HEIGHT - 1);
 
 	}
 	bool tryMove()							//Check if the block is movable.
@@ -195,8 +198,8 @@ public:
 	enum Blocks { No_shape, Line_shape, Square_shape, N_shape, MirrorN_shape, L_shape, MirrorL_shape, T_shape };
 	TetrisBlock()
 	{
-		int coord[4][2];
-		int coord_table[SHAPE_NUM + 1][4][2] = 
+		int coords[4][2];
+		int coord_tables[SHAPE_NUM + 1][4][2] = 
 		{ 
 			{ (0,0),(0,0),(0,0),(0,0) },
 			{ (1,0),(0,0),(0,1),(0,2) },
@@ -215,8 +218,11 @@ public:
 	}
 	void setBlockShape(Blocks shape)
 	{
-		//set block coord.
-
+		for (size_t i = 0; i < 4; i++)
+		{
+			coord[i][0] = coord_table[(Blocks)shape][i][0];
+			coord[i][1] = coord_table[(Blocks)shape][i][1];
+		}
 		this->block_shape = shape;
 	}
 	void randomShape()
@@ -239,6 +245,8 @@ public:
 
 private:
 	Blocks block_shape;
+	int coord[4][2];
+	int coord_table[SHAPE_NUM + 1][4][2];
 	
 	int Current_X = 0;
 	int Current_Y = 0;
