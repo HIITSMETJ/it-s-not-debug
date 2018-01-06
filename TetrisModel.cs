@@ -71,13 +71,33 @@ public class TetrisModel
     public void createBlock()                      //Create the block
     {
         current_block.randomShape();
-        //current_block.set_CurrentX(BOARD_WIDTH / 2); 
-        //current_block.set_CurrentY(BOARD_HEIGHT - 1);
+        current_block.set_CurrentX(BOARD_WIDTH / 2);
+        current_block.set_CurrentY(1);
+
+        if (!tryMove(current_block, current_block.get_CurrentX(), current_block.get_CurrentY()))
+        {
+            current_block.setBlockShape(TetrisBlock::Blocks.No_shape);
+            //timer.stop();
+            started = false;
+            //Gameover.
+        }
 
     }
-    public bool tryMove()                          //Check if the block is movable.
+    public bool tryMove(TetrisBlock block, int newX, int newY)                          //Check if the block is movable.
     {
-
+        for (size_t i = 0; i < 4; i++)
+        {
+            int x = newX + block.get_X(i);
+            int y = newY + block.get_Y(i);
+            if (x < 0 || x > BOARD_WIDTH || y < 0 || y >= BOARD_HEIGHT)
+                return false;
+            //
+        }
+        current_block = block;
+        current_block.set_CurrentX(newX);
+        current_block.set_CurrentY(newY);
+        //repaint?
+        return true;
     }
     public bool fall()                            //Block falling per time unit
     {
@@ -88,18 +108,26 @@ public class TetrisModel
         switch (control)
         {
             case 'a':               //left
-                                    //
+                if (tryMove(current_block, current_block.get_CurrentX() - 1, current_block.get_CurrentY()))
+                    current_block.set_CurrentX(current_block.get_CurrentX() - 1);
                 BottomDetection();
                 break;
             case 'd':               //right
-                                    //
+                if (tryMove(current_block, current_block.get_CurrentX() + 1, current_block.get_CurrentY()))
+                    current_block.set_CurrentX(current_block.get_CurrentX() + 1);
                 BottomDetection();
                 break;
             case 's':               //down+speed
                 while (fall()) ;
                 break;
             case ' ':               //spin
-                                    //
+                if (current_block.getBlockShape() != TetrisBlock::Blocks.No_shape && current_block.getBlockShape() != TetrisBlock::Blocks.Square_shape)
+                {
+                    TetrisBlock rotate_test = current_block;
+                    rotate_test.rotate();
+                    if (tryMove(rotate_test, rotate_test.get_CurrentX(), rotate_test.get_CurrentY()))
+                        current_block.rotate();
+                }
                 BottomDetection();
                 break;
         }
@@ -199,24 +227,131 @@ public class TetrisModel
 
 class Timer
 {
-    public:
-	Timer()
+    public Timer()
+    {
+        reset();
+    }
+    public void start()
     {
 
     }
-    void start()
+    //no need
+    /*
+    public pause()
     {
 
     }
-    void pause()
+    */
+    public void reset()
     {
-
-    }
-    void reset()
-    {
-
+        timer = 0;
     }
 
-    private:
+    float timer;
+    bool timerLock;
+};
+class TetrisBlock
+{
+    public enum Blocks { No_shape, Line_shape, Square_shape, N_shape, MirrorN_shape, L_shape, MirrorL_shape, T_shape };
+    public TetrisBlock()
+    {
+        int[,] coords = new int[4, 2];
+        int[,,] coord_tables = new int[SHAPE_NUM + 1, 4, 2]
+        {
+            { ( 1, 1),( 1, 1),( 1, 1),( 1, 1) },
+            { ( 0,-1),(-1,-1),(-1, 0),(-1, 1) },
+            { (-1,-1),( 0,-1),( 0, 0),( 0, 1) },
+            { (-1,-1),(-1, 0),( 0, 0),( 0, 1) },
+            { ( 0,-1),( 0, 0),(-1, 0),(-1, 1) },
+            { (-1,-1),( 0,-1),(-1, 0),( 0, 0) },
+            { (-1,-1),(-1, 0),( 0, 0),(-1, 1) },
+            { ( 0, 0),( 0, 1),( 0, 2),( 0, 3) }
+        };
+        setBlockShape((Blocks)No_shape);
+    }
+    public Blocks getBlockShape()
+    {
+        return block_shape;
+    }
+    void setBlockShape(Blocks shape)
+    {
+        for (size_t i = 0; i < 4; i++)
+        {
+            coord[i][0] = coord_table[(Blocks)shape][i][0];
+            coord[i][1] = coord_table[(Blocks)shape][i][1];
+        }
+        this->block_shape = shape;
+    }
+    void randomShape()
+    {
+        srand(time(NULL));
+
+        int random = rand() % SHAPE_NUM + 1;
+        Blocks shape = (Blocks)random;
+
+        setBlockShape(shape);
+    }
+    void set_CurrentX(int x)
+    {
+        Current_X = x;
+    }
+    void set_CurrentY(int y)
+    {
+        Current_Y = y;
+    }
+    int get_CurrentX()
+    {
+        return Current_X;
+    }
+    int get_CurrentY()
+    {
+        return Current_Y;
+    }
+    void set_X(int index, int x)
+    {
+        coord[index][0] = x;
+    }
+    void set_Y(int index, int y)
+    {
+        coord[index][1] = y;
+    }
+    int get_X(int index)
+    {
+        return coord[index][0];
+    }
+    int get_Y(int index)
+    {
+        return coord[index][1];
+    }
+    int min_X()
+    {
+        int minX = coord[0][0];
+        for (size_t i = 0; i < 4; i++)
+            minX = min(minX, coord[i][0]);
+        return minX;
+    }
+    int min_Y()
+    {
+        int minY = coord[0][1];
+        for (size_t i = 0; i < 4; i++)
+            minY = min(minY, coord[i][1]);
+        return minY;
+    }
+    void rotate()
+    {
+        for (size_t i = 0; i < 4; i++)
+        {
+            int tmp = get_X(i);
+            set_X(i, get_Y(i));
+            set_Y(i, tmp);
+        }
+    }
+    //private
+	Blocks block_shape;
+    int[,] coord = new int[4, 2];
+    int[,,] coord_table = new int[SHAPE_NUM + 1, 4, 2];
+
+    int Current_X = 0;
+    int Current_Y = 0;
 
 };
