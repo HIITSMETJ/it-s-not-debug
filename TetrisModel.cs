@@ -229,19 +229,22 @@ class Timer
 {
     public Timer()
     {
-
+        reset();
     }
     public void start()
     {
 
     }
+    //no need
+    /*
     public pause()
     {
 
     }
+    */
     public void reset()
     {
-
+        timer = 0;
     }
 
     float timer;
