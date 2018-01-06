@@ -41,12 +41,12 @@ public:
 	}
 	void pause()							//Pause or continue the game.
 	{
-		if (!isStarted)
+		if (!started)
 			return;
 
 		paused = !paused;
 
-		if (isPaused)
+		if (paused)
 		{
 			timer.pause();
 			//	tetrisBoard.setStatusText("paused");
@@ -70,7 +70,7 @@ public:
 	{
 		current_block.randomShape();
 		current_block.set_CurrentX(BOARD_WIDTH / 2); 
-		current_block.set_CurrentY(BOARD_HEIGHT - 1);
+		current_block.set_CurrentY(1);
 
 		if (!tryMove(current_block, current_block.get_CurrentX(), current_block.get_CurrentY()))
 		{
@@ -105,18 +105,26 @@ public:
 		switch (control)
 		{
 		case 'a':				//left
-								//
+			if (tryMove(current_block, current_block.get_CurrentX() - 1, current_block.get_CurrentY()))
+				current_block.set_CurrentX(current_block.get_CurrentX() - 1);
 			BottomDetection();
 			break;
 		case 'd':				//right
-								//w
+			if (tryMove(current_block, current_block.get_CurrentX() + 1, current_block.get_CurrentY()))
+				current_block.set_CurrentX(current_block.get_CurrentX() + 1);
 			BottomDetection();
 			break;
 		case 's':				//down+speed
 			while (fall());
 			break;
 		case ' ':				//spin
-								//
+			if (current_block.getBlockShape() != TetrisBlock::Blocks::No_shape&&current_block.getBlockShape() != TetrisBlock::Blocks::Square_shape)
+			{
+				TetrisBlock rotate_test = current_block;
+				rotate_test.rotate();
+				if (tryMove(rotate_test, rotate_test.get_CurrentX(), rotate_test.get_CurrentY()))
+					current_block.rotate();
+			}
 			BottomDetection();
 			break;
 		}
@@ -273,6 +281,24 @@ public:
 	int get_Y(int index)
 	{
 		return coord[index][1];
+	}
+	int min_X()
+	{
+		int minX = coord[0][0];
+		for (size_t i = 0; i < 4; i++)
+			minX = min(minX, coord[i][0]);
+		return minX;
+	}
+	int min_Y()
+	{
+		int minY = coord[0][1];
+		for (size_t i = 0; i < 4; i++)
+			minY = min(minY, coord[i][1]);
+		return minY;
+	}
+	void rotate()
+	{
+
 	}
 private:
 	Blocks block_shape;
