@@ -69,7 +69,7 @@ public:
 	void createBlock()						//Create the block
 	{
 		current_block.randomShape();
-		//current_block.set_CurrentX(BOARD_WIDTH / 2);
+		//current_block.set_CurrentX(BOARD_WIDTH / 2); 
 		//current_block.set_CurrentY(BOARD_HEIGHT - 1);
 
 	}
