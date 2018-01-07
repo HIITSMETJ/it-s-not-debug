@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using windows.h;
 using conio.h;
 using ctime;
@@ -13,7 +13,8 @@ public class TetrisModel
     private bool toBottom = false;
     private bool started = false;
     private bool isGameOver = false;
-    private int Score = 0;
+    private int Score = 0;	
+    private TetrisBlock current_block;
 
 
     public TetrisModel()
@@ -21,14 +22,12 @@ public class TetrisModel
 
 
 	}
-    //Check line after block finished falling.
-    public void GameAction()                                                            
+    
+    public void GameAction()      							//Check line after block finished falling.                                                      
     {
 	addBlockToBoard(current_block, current_block.get_CurrentX(), current_block.get_CurrentY());
         createBlock();
-        eliminateRow();
-        
-                   
+        eliminateRow();                   
     }
     public void start()                                                                 //Start the game.
     {
@@ -36,7 +35,6 @@ public class TetrisModel
         Score = 0;
         clearBoard();
         createBlock();
-        timer.start();
     }
 
     public bool isStarted()                                                             //Check if started.
@@ -59,23 +57,22 @@ public class TetrisModel
 
     }
 
-    public bool tryMove(TetrisBlock block, int newX, int newY)                          //Check if the block is movable.
+    public bool tryMove(TetrisBlock block, int newX, int newY)                          //Check if the block is movable, and then move
     {
         for (size_t i = 0; i < 4; i++)
         {
             int x = newX + block.get_X(i);
             int y = newY + block.get_Y(i);
-            if (board[x][y]) return false;                                              //cant put curBlock on exist blocks
+            if (board[x][y]) return false;                                              //cannot put curBlock on exist blocks
             if (x < 0 || x > BOARD_WIDTH || y < 0 || y >= BOARD_HEIGHT)                 //block out of board
                 return false;
-            //
         }
         current_block = block;
         current_block.set_CurrentX(newX);
         current_block.set_CurrentY(newY);
-        //repaint?
         return true;
     }
+	
     public bool fall()                                                                  //Block falling per time unit
     {
         if (!tryMove(current_block, current_block.get_CurrentX(), current_block.get_CurrentY() + 1))
@@ -83,19 +80,16 @@ public class TetrisModel
             GameAction();
         }
     }
+	
     public void moveBlock(char control)                                                 //Change the block for either move or spin
     {
         switch (control)
         {
             case 'a':               //left
                 if (tryMove(current_block, current_block.get_CurrentX() - 1, current_block.get_CurrentY()))
-                    current_block.set_CurrentX(current_block.get_CurrentX() - 1);
-                BottomDetection();
                 break;
             case 'd':               //right
                 if (tryMove(current_block, current_block.get_CurrentX() + 1, current_block.get_CurrentY()))
-                    current_block.set_CurrentX(current_block.get_CurrentX() + 1);
-                BottomDetection();
                 break;
             case 's':               //down+speed
                 while (fall()) ;
@@ -108,23 +102,15 @@ public class TetrisModel
                     if (tryMove(rotate_test, rotate_test.get_CurrentX(), rotate_test.get_CurrentY()))
                         current_block.rotate();
                 }
-                BottomDetection();
                 break;
         }
     }
-    /*	a		:left
-        s		:down+speed
-        d		:right
-        space	:spin
-    */
-    public bool BottomDetection()                                                       //Check if block touches bottom.
-    {
-
-    }
+	
     public bool GameOver()                                                              //Check if game is over or not.
     {
         return isGameOver;
     }
+	
     public void eliminateRow()                                                          //Delete while line completed
     {
         bool[] isAbleDelete = new bool[constant.BOARD_HEIGHT];
@@ -167,7 +153,7 @@ public class TetrisModel
             lines[i + 1] = count;
         }
 
-        Score += count * 10;                                        //delete line score
+        Score += count * 10;                                        //delete line -> add score
 
         //被清空的列要被上面取代
         for (int i = constant.BOARD_HEIGHT - 1; i >= 0; i--)
@@ -181,10 +167,12 @@ public class TetrisModel
             }
         }
     }
+	
     public int getScore()                                                               //Return score for the display.
     {
         return Score;
     }
+	
     public void addBlockToBoard(TetrisBlock block, int newX, int newY)
     {
         for (size_t i = 0; i < 4; i++)
@@ -194,15 +182,11 @@ public class TetrisModel
             board[x][y] == 1;
         }
     }
-    private Timer timer;
-    private TetrisBlock current_block;
+	
     private void clearBoard()
     {
         Array.Clear(board, 0, constant.BOARD_HEIGHT * constant.BOARD_WIDTH - 1);
     }
-    
-
-
 };
 
 
@@ -242,9 +226,9 @@ class TetrisBlock
         }
         this->block_shape = shape;
     }
-    void randomShape()                                                                  //Random the shape.
+    void randomShape()                                                                  //Random th shape.
     {
-        srand(time(NULL));
+        srand(time(NULL));      //Need to change position.
 
         int random = rand() % SHAPE_NUM + 1;
         Blocks shape = (Blocks)random;
