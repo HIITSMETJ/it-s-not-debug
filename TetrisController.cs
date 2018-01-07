@@ -1,9 +1,5 @@
 ﻿using System;
-using windows.h;
-using conio.h;
-using ctime;
-using cmath;
-using iostream;
+
 using TetrisModel.cs;
 
 public class TetrisController
@@ -26,7 +22,7 @@ public class TetrisController
         myTimer.Start();
         while (!model.GameOver())
         {  //讀取user透過鍵盤對方塊下的指令
-           if (_kbhit())
+           if (Console.KeyAvailable)
            {
                char control = Console.ReadKey();
                model->moveBlock(control);
