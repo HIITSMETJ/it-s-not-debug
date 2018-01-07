@@ -23,6 +23,12 @@ public class TetrisModel
 
 	}
     
+    public void getBoard(bool[constant.BOARD_HEIGHT, constant.BOARD_WIDTH]  viewBoard)
+    {
+	    viewBoard=board;
+	    return;
+    }
+	
     public void GameAction()      							//Check line after block finished falling.                                                      
     {
 	addBlockToBoard(current_block, current_block.get_CurrentX(), current_block.get_CurrentY());
