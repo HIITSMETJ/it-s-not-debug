@@ -206,7 +206,7 @@ public class TetrisBlock
         int[,,] coord_tables = new int[(int)constant.SHAPE_NUM + 1, 4, 2]
         {
             { { 0, 0},{ 0, 0},{ 0, 0},{ 0, 0} },        //  No_shape
-            { { 0, 0},{ 0, 1},{ 0, 2},{ 0, 3} },        //  Line_shape
+            { { 0, -1},{ 0, 0},{ 0, 1},{ 0, 2} },        //  Line_shape
             { {-1,-1},{ 0,-1},{-1, 0},{ 0, 0} },        //  Square_shape
             { {-1,-1},{-1, 0},{ 0, 0},{ 0, 1} },        //  N-shape
             { { 0,-1},{ 0, 0},{-1, 0},{-1, 1} },        //  MirrorN_shape
