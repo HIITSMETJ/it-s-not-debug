@@ -193,36 +193,10 @@ public class TetrisModel
     }
     
 
-    //int[][] coords;
-    //int[][][] coordsTable;
 
 };
 
-class Timer
-{
-    public Timer()
-    {
-        reset();
-    }
-    public void start()
-    {
 
-    }
-    //no need
-    /*
-    public pause()
-    {
-
-    }
-    */
-    public void reset()
-    {
-        timer = 0;
-    }
-
-    float timer;
-    bool timerLock;
-};
 class TetrisBlock
 {
     //Enumerate the shapes.
