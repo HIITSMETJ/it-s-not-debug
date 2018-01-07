@@ -10,64 +10,39 @@ enum constant { BOARD_WIDTH=10, BOARD_HEIGHT=22, SHAPE_NUM=7 };
 public class TetrisModel
 {
     private bool[,] board=new bool[constant.BOARD_HEIGHT, constant.BOARD_WIDTH] {0};
-	public TetrisModel()
+    private bool toBottom = false;
+    private bool started = false;
+    private bool isGameOver = false;
+    private int Score = 0;
+
+
+    public TetrisModel()
 	{
 
 
 	}
-    public void GameAction()                                                            //Check line after block finished falling.
+    //Check line after block finished falling.
+    public void GameAction()                                                            
     {
-        if (toBottom)
-        {
-            toBottom = false;
-            createBlock();
-            eliminateRow();
-        }
+        createBlock();
+        eliminateRow();
+        
                    
     }
     public void start()                                                                 //Start the game.
     {
-        //if (isPaused)
-        //    return;
         started = true;
-        toBottom = false;
-        LinesRemoved = 0;
         Score = 0;
         clearBoard();
         createBlock();
         timer.start();
     }
-    /*   No need 
-    public void pause()                                                                 //Pause or continue the game.
-    {
-        if (!started)
-            return;
 
-        paused = !paused;
-
-        if (paused)
-        {
-            timer.pause();
-            //	tetrisBoard.setStatusText("paused");
-        }
-        else
-        {
-            timer.start();
-            //	tetrisBoard.setStatusText(String.valueOf(numLinesRemoved));
-        }
-        //tetrisBoard.repaint();
-    }
-    */
     public bool isStarted()                                                             //Check if started.
     {
         return started;
     }
-    /* No need
-    bool isPaused()                                                                     //Check if paused.
-    {
-        return paused;
-    }
-    */
+    
     public void createBlock()                                                           //Create the block
     {
         current_block.randomShape();
@@ -77,12 +52,12 @@ public class TetrisModel
         if (!tryMove(current_block, current_block.get_CurrentX(), current_block.get_CurrentY()))
         {
             current_block.setBlockShape(TetrisBlock::Blocks.No_shape);
-            //timer.stop();
             started = false;
-            //Gameover.
+            isGameOver = true;
         }
 
     }
+
     public bool tryMove(TetrisBlock block, int newX, int newY)                          //Check if the block is movable.
     {
         for (size_t i = 0; i < 4; i++)
@@ -104,12 +79,6 @@ public class TetrisModel
     {
         if (!tryMove(current_block, current_block.get_CurrentX(), current_block.get_CurrentY() + 1))
         {
-            for (size_t i = 0; i < 4; i++)
-            {
-                int x = newX + block.get_X(i);
-                int y = newY + block.get_Y(i);
-                if (y == constant.BOARD_HEIGHT - 1) toBottom = true;
-            }
             GameAction();
         }
     }
@@ -147,22 +116,13 @@ public class TetrisModel
         d		:right
         space	:spin
     */
-    /*	while(true)
-        {
-        if(_kbhit())
-        {
-        char control = _getch();
-        //moveBlock(control);
-        }
-        }
-    */
     public bool BottomDetection()                                                       //Check if block touches bottom.
     {
 
     }
     public bool GameOver()                                                              //Check if game is over or not.
     {
-
+        return isGameOver;
     }
     public void eliminateRow()                                                          //Delete while line completed
     {
@@ -231,12 +191,7 @@ public class TetrisModel
     {
         Array.Clear(board, 0, constant.BOARD_HEIGHT * constant.BOARD_WIDTH - 1);
     }
-    private bool toBottom = false;
-    private bool started = false;
-    private bool paused = false;
-    private bool isGameOver = false;
-    private int LinesRemoved = 0;
-    private int Score = 0;
+    
 
     //int[][] coords;
     //int[][][] coordsTable;
