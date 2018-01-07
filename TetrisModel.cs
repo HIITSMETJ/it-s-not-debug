@@ -1,9 +1,5 @@
 using System;
-using windows.h;
-using conio.h;
-using ctime;
-using cmath;
-using iostream;
+
 enum constant { BOARD_WIDTH=10, BOARD_HEIGHT=22, SHAPE_NUM=7 };
 
 
@@ -23,7 +19,7 @@ public class TetrisModel
 
 	}
     
-    public void getBoard(bool[constant.BOARD_HEIGHT, constant.BOARD_WIDTH]  viewBoard)
+    public void getBoard(bool[,]  viewBoard)
     {
 	    viewBoard=board;
 	    return;
