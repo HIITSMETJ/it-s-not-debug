@@ -233,9 +233,9 @@ class TetrisBlock
         }
         this->block_shape = shape;
     }
-    void randomShape()                                                                  //Random th shape.
+    void randomShape()                                                                  //Random the shape.
     {
-        srand(time(NULL));      //Need to change position.
+        srand(time(NULL));
 
         int random = rand() % SHAPE_NUM + 1;
         Blocks shape = (Blocks)random;
