@@ -1,38 +1,38 @@
 ﻿using System;
-
-using TetrisModel.cs;
+using System.Windows.Forms;
 
 public class TetrisController
 {
-    static public Windows.Forms.Timer myTimer = new Windows.Forms.Timer();
+    public Timer myTimer = new Timer();
     private TetrisModel model;
-    private TetrisView view;
+    private Form view;
 
-    public TetrisController(TetrisModel* model, int board_width, int board_height)
+    public TetrisController(TetrisModel model, int board_width, int board_height)
     {
-
+        model = new TetrisModel(this);
     }
-  
-    public start()
+
+    public void start()
     {
         model.start();
         myTimer.Interval = 1500;
         myTimer.Enabled = true;
-        timer.Tick += new EventHandler(MyTimerTick);
+        myTimer.Tick += new EventHandler(myTimer_Tick);
         myTimer.Start();
         while (!model.GameOver())
         {  //讀取user透過鍵盤對方塊下的指令
-           if (Console.KeyAvailable)
-           {
-               char control = Console.ReadKey();
-               model->moveBlock(control);
-	    }
-	    view.ChangeView();
+            if (Console.KeyAvailable)
+            {
+                char control = Console.ReadKey().KeyChar;
+                model.moveBlock(control);
+            }
+            //view.ChangeView();
         }
-	 myTimer.Stop();
+        myTimer.Stop();
     }
-    private static void myTimer_Tick(Object myObject, EventArgs myEventArgs)
+    private void myTimer_Tick(Object myObject, EventArgs myEventArgs)
     {
+        myTimer.Interval = 1500;
         model.fall();
     }
 }

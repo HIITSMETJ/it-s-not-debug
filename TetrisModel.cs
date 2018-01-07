@@ -1,35 +1,36 @@
 using System;
-
-enum constant { BOARD_WIDTH=10, BOARD_HEIGHT=22, SHAPE_NUM=7 };
+enum constant { BOARD_WIDTH = 10, BOARD_HEIGHT = 22, SHAPE_NUM = 7 };
 
 
 public class TetrisModel
 {
-    private bool[,] board=new bool[constant.BOARD_HEIGHT, constant.BOARD_WIDTH] {0};
+    private bool[,] board = new bool[(int)constant.BOARD_WIDTH, (int)constant.BOARD_HEIGHT];
     private bool toBottom = false;
     private bool started = false;
     private bool isGameOver = false;
-    private int Score = 0;	
+    private int Score = 0;
     private TetrisBlock current_block;
+    private TetrisController controller;
 
 
-    public TetrisModel()
-	{
-
-
-	}
-    
-    public void getBoard(bool[,]  viewBoard)
+    public TetrisModel(TetrisController controller)
     {
-	    viewBoard=board;
-	    return;
+        this.controller = controller;
     }
-	
+
+
+
+    public void getBoard(bool[,] viewBoard)
+    {
+        viewBoard = board;
+        return;
+    }
+
     public void GameAction()      							//Check line after block finished falling.                                                      
     {
-	addBlockToBoard(current_block, current_block.get_CurrentX(), current_block.get_CurrentY());
+        addBlockToBoard(current_block, current_block.get_CurrentX(), current_block.get_CurrentY());
         createBlock();
-        eliminateRow();                   
+        eliminateRow();
     }
     public void start()                                                                 //Start the game.
     {
@@ -43,16 +44,16 @@ public class TetrisModel
     {
         return started;
     }
-    
+
     public void createBlock()                                                           //Create the block
     {
         current_block.randomShape();
-        current_block.set_CurrentX(BOARD_WIDTH / 2);
+        current_block.set_CurrentX((int)constant.BOARD_WIDTH / 2);
         current_block.set_CurrentY(1);
 
         if (!tryMove(current_block, current_block.get_CurrentX(), current_block.get_CurrentY()))
         {
-            current_block.setBlockShape(TetrisBlock::Blocks.No_shape);
+            current_block.setBlockShape(TetrisBlock.Blocks.No_shape);
             started = false;
             isGameOver = true;
         }
@@ -61,12 +62,12 @@ public class TetrisModel
 
     public bool tryMove(TetrisBlock block, int newX, int newY)                          //Check if the block is movable, and then move
     {
-        for (size_t i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
         {
             int x = newX + block.get_X(i);
             int y = newY + block.get_Y(i);
-            if (board[x][y]) return false;                                              //cannot put curBlock on exist blocks
-            if (x < 0 || x > BOARD_WIDTH || y < 0 || y >= BOARD_HEIGHT)                 //block out of board
+            if (board[x, y]) return false;                                              //cannot put curBlock on exist blocks
+            if (x < 0 || x > (int)constant.BOARD_WIDTH || y < 0 || y >= (int)constant.BOARD_HEIGHT)                 //block out of board
                 return false;
         }
         current_block = block;
@@ -74,30 +75,32 @@ public class TetrisModel
         current_block.set_CurrentY(newY);
         return true;
     }
-	
-    public bool fall()                                                                  //Block falling per time unit
+
+    public void fall()                                                                  //Block falling per time unit
     {
         if (!tryMove(current_block, current_block.get_CurrentX(), current_block.get_CurrentY() + 1))
         {
             GameAction();
         }
     }
-	
+
     public void moveBlock(char control)                                                 //Change the block for either move or spin
     {
         switch (control)
         {
             case 'a':               //left
                 if (tryMove(current_block, current_block.get_CurrentX() - 1, current_block.get_CurrentY()))
-                break;
+                    break;
+                goto case 'd';
             case 'd':               //right
                 if (tryMove(current_block, current_block.get_CurrentX() + 1, current_block.get_CurrentY()))
-                break;
+                    break;
+                goto case 's';
             case 's':               //down+speed
-                while (fall()) ;
+                controller.myTimer.Interval = 200;
                 break;
             case ' ':               //spin
-                if (current_block.getBlockShape() != TetrisBlock::Blocks.No_shape && current_block.getBlockShape() != TetrisBlock::Blocks.Square_shape)
+                if (current_block.getBlockShape() != TetrisBlock.Blocks.No_shape && current_block.getBlockShape() != TetrisBlock.Blocks.Square_shape)
                 {
                     TetrisBlock rotate_test = current_block;
                     rotate_test.rotate();
@@ -107,46 +110,46 @@ public class TetrisModel
                 break;
         }
     }
-	
+
     public bool GameOver()                                                              //Check if game is over or not.
     {
         return isGameOver;
     }
-	
+
     public void eliminateRow()                                                          //Delete while line completed
     {
-        bool[] isAbleDelete = new bool[constant.BOARD_HEIGHT];
-        for (int i = 0; i < constant.BOARD_HEIGHT; i++)
+        bool[] isAbleDelete = new bool[(int)constant.BOARD_HEIGHT];
+        for (int i = 0; i < (int)constant.BOARD_HEIGHT; i++)
         {
-            isAbleDelete[i] = 1;
+            isAbleDelete[i] = true;
         }
-       
+
         //記錄哪些列是滿的
-        for (int i = constant.BOARD_HEIGHT - 1; i >= 0; i--)
+        for (int i = (int)constant.BOARD_HEIGHT - 1; i >= 0; i--)
         {
-            for (int j = constant.BOARD_WIDTH - 1; j >= 0; j--)
+            for (int j = (int)constant.BOARD_WIDTH - 1; j >= 0; j--)
             {
-                if (board[i][j] == 0)
+                if (board[i, j] == false)
                 {
-                    isAbleDelete[i] = 0;
+                    isAbleDelete[i] = false;
                 }
             }
         }
         //將滿的那幾列全刪
-        for (int i = constant.BOARD_HEIGHT - 1; i >= 0; i--)
+        for (int i = (int)constant.BOARD_HEIGHT - 1; i >= 0; i--)
         {
-            for (int j = constant.BOARD_WIDTH - 1; j >= 0; j--)
+            for (int j = (int)constant.BOARD_WIDTH - 1; j >= 0; j--)
             {
                 if (isAbleDelete[i])
                 {
-                    board[i][j] = 0;
+                    board[i, j] = false;
                 }
             }
         }
         //算每列要下落幾列，這邊lines[]的意義有點複雜，配合下個for loop看比較好懂
-        int[] lines = new int[constant.BOARD_HEIGHT + 1] { 0 };
+        int[] lines = new int[(int)constant.BOARD_HEIGHT + 1];
         int count = 0;
-        for (int i = constant.BOARD_HEIGHT - 1; i >= 0; i--)
+        for (int i = (int)constant.BOARD_HEIGHT - 1; i >= 0; i--)
         {
             if (isAbleDelete[i])
             {
@@ -158,41 +161,41 @@ public class TetrisModel
         Score += count * 10;                                        //delete line -> add score
 
         //被清空的列要被上面取代
-        for (int i = constant.BOARD_HEIGHT - 1; i >= 0; i--)
+        for (int i = (int)constant.BOARD_HEIGHT - 1; i >= 0; i--)
         {
-            for (int j = constant.BOARD_WIDTH - 1; j >= 0; j--)
+            for (int j = (int)constant.BOARD_WIDTH - 1; j >= 0; j--)
             {
                 if (i - 1 < 0)
-                    board[i][j] = 0;
+                    board[i, j] = false;
                 else
-                    board[i][j] = board[i - lines[i]][j];
+                    board[i, j] = board[i - lines[i], j];
             }
         }
     }
-	
+
     public int getScore()                                                               //Return score for the display.
     {
         return Score;
     }
-	
+
     public void addBlockToBoard(TetrisBlock block, int newX, int newY)
     {
-        for (size_t i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
         {
             int x = newX + block.get_X(i);
             int y = newY + block.get_Y(i);
-            board[x][y] == 1;
+            board[x, y] = true;
         }
     }
-	
+
     private void clearBoard()
     {
-        Array.Clear(board, 0, constant.BOARD_HEIGHT * constant.BOARD_WIDTH - 1);
+        Array.Clear(board, 0, (int)constant.BOARD_HEIGHT * (int)constant.BOARD_WIDTH - 1);
     }
 };
 
 
-class TetrisBlock
+public class TetrisBlock
 {
     //Enumerate the shapes.
     public enum Blocks { No_shape, Line_shape, Square_shape, N_shape, MirrorN_shape, L_shape, MirrorL_shape, T_shape };
@@ -200,74 +203,75 @@ class TetrisBlock
     public TetrisBlock()
     {
         int[,] coords = new int[4, 2];
-        int[,,] coord_tables = new int[SHAPE_NUM + 1, 4, 2]
+        int[,,] coord_tables = new int[(int)constant.SHAPE_NUM + 1, 4, 2]
         {
-            { ( 0, 0),( 0, 0),( 0, 0),( 0, 0) },        //  No_shape
-            { ( 0, 0),( 0, 1),( 0, 2),( 0, 3) },        //  Line_shape
-            { (-1,-1),( 0,-1),(-1, 0),( 0, 0) },        //  Square_shape
-            { (-1,-1),(-1, 0),( 0, 0),( 0, 1) },        //  N-shape
-            { ( 0,-1),( 0, 0),(-1, 0),(-1, 1) },        //  MirrorN_shape
-            { (-1,-1),( 0,-1),( 0, 0),( 0, 1) },        //  L_shape
-            { ( 0,-1),(-1,-1),(-1, 0),(-1, 1) },        //  MirrorL_shape          
-            { (-1,-1),(-1, 0),( 0, 0),(-1, 1) }         //  T-shape          
+            { { 0, 0},{ 0, 0},{ 0, 0},{ 0, 0} },        //  No_shape
+            { { 0, 0},{ 0, 1},{ 0, 2},{ 0, 3} },        //  Line_shape
+            { {-1,-1},{ 0,-1},{-1, 0},{ 0, 0} },        //  Square_shape
+            { {-1,-1},{-1, 0},{ 0, 0},{ 0, 1} },        //  N-shape
+            { { 0,-1},{ 0, 0},{-1, 0},{-1, 1} },        //  MirrorN_shape
+            { {-1,-1},{ 0,-1},{ 0, 0},{ 0, 1} },        //  L_shape
+            { { 0,-1},{-1,-1},{-1, 0},{-1, 1} },        //  MirrorL_shape          
+            { {-1,-1},{-1, 0},{ 0, 0},{-1, 1} }         //  T-shape          
         };
 
-        setBlockShape((Blocks)No_shape);
+        setBlockShape((Blocks)Blocks.No_shape);
     }
 
     public Blocks getBlockShape()                                                       //Get private block shape.
     {
         return block_shape;
     }
-    void setBlockShape(Blocks shape)                                                    //Set the block shape by the shape table.
+    public void setBlockShape(Blocks shape)                                                    //Set the block shape by the shape table.
     {
-        for (size_t i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
         {
-            coord[i][0] = coord_table[(Blocks)shape][i][0];
-            coord[i][1] = coord_table[(Blocks)shape][i][1];
+            coord[i, 0] = coord_table[(int)shape, i, 0];
+            coord[i, 1] = coord_table[(int)shape, i, 1];
         }
-        this->block_shape = shape;
+        this.block_shape = shape;
     }
-    void randomShape()                                                                  //Random th shape.
+    public void randomShape()                                                                  //Random th shape.
     {
-        srand(time(NULL));      //Need to change position.
+        //srand(time(NULL));      //Need to change position.
 
-        int random = rand() % SHAPE_NUM + 1;
+        Random random_R = new Random();
+        int random = random_R.Next(1, (int)constant.SHAPE_NUM + 1);
         Blocks shape = (Blocks)random;
 
         setBlockShape(shape);
     }
-    void set_CurrentX(int x)                                                            //Set CurrentX by x.
+    public void set_CurrentX(int x)                                                            //Set CurrentX by x.
     {
         Current_X = x;
     }
-    void set_CurrentY(int y)                                                            //Set CurrentY by y.
+    public void set_CurrentY(int y)                                                            //Set CurrentY by y.
     {
         Current_Y = y;
     }
-    int get_CurrentX()                                                                  //Get private CurrentX.
+    public int get_CurrentX()                                                                  //Get private CurrentX.
     {
         return Current_X;
     }
-    int get_CurrentY()                                                                  //Get private CurrentY.
+    public int get_CurrentY()                                                                  //Get private CurrentY.
     {
         return Current_Y;
     }
-    void set_X(int index, int x)                                                        //Set block coord x.
+    public void set_X(int index, int x)                                                        //Set block coord x.
     {
-        coord[index][0] = x;
+        coord[index, 0] = x;
     }
-    void set_Y(int index, int y)                                                        //Set block coord y.
+    public void set_Y(int index, int y)                                                        //Set block coord y.
     {
-        coord[index][1] = y;
+        coord[index, 1] = y;
     }
-    int get_X(int index)                                                                //Get private block coord x.
+    public int get_X(int index)                                                                //Get private block coord x.
     {
-        return coord[index][0];
+        return coord[index, 0];
     }
-    int get_Y(int index)                                                                //Get private block coord y.
+    public int get_Y(int index)                                                                //Get private block coord y.
     {
-        return coord[index][1];
+        return coord[index, 1];
     }
     /* Not yet used.
     int min_X()
@@ -284,19 +288,19 @@ class TetrisBlock
             minY = min(minY, coord[i][1]);
         return minY;
     }*/
-    void rotate()                                                                       //Rotate block.
+    public void rotate()                                                                       //Rotate block.
     {
-        for (size_t i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
         {
             int tmp = get_X(i);
             set_X(i, get_Y(i));
             set_Y(i, -tmp);
         }
     }
-   
-	private Blocks block_shape;
+
+    private Blocks block_shape;
     private int[,] coord = new int[4, 2];                                                       //Block shape coord.
-    private int[,,] coord_table = new int[SHAPE_NUM + 1, 4, 2];                                 //All block shape coord table.
+    private int[,,] coord_table = new int[(int)constant.SHAPE_NUM + 1, 4, 2];                                 //All block shape coord table.
 
     private int Current_X = 0;                                                                  //Current_X means the x-position of the block on the board.
     private int Current_Y = 0;                                                                  //Current_Y means the y-position of the block on the board.
