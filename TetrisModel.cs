@@ -24,6 +24,7 @@ public class TetrisModel
     //Check line after block finished falling.
     public void GameAction()                                                            
     {
+	addBlockToBoard(current_block, current_block.get_CurrentX(), current_block.get_CurrentY());
         createBlock();
         eliminateRow();
         
@@ -184,7 +185,15 @@ public class TetrisModel
     {
         return Score;
     }
-
+    public void addBlockToBoard(TetrisBlock block, int newX, int newY)
+    {
+        for (size_t i = 0; i < 4; i++)
+        {
+            int x = newX + block.get_X(i);
+            int y = newY + block.get_Y(i);
+            board[x][y] == 1;
+        }
+    }
     private Timer timer;
     private TetrisBlock current_block;
     private void clearBoard()
