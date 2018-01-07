@@ -29,8 +29,8 @@ public class TetrisModel
     public void GameAction()      							//Check line after block finished falling.                                                      
     {
         addBlockToBoard(current_block, current_block.get_CurrentX(), current_block.get_CurrentY());
-        createBlock();
         eliminateRow();
+        createBlock();
     }
     public void start()                                                                 //Start the game.
     {
