@@ -40,12 +40,12 @@ public class TetrisModel
     /*   No need 
     public void pause()                                                                 //Pause or continue the game.
     {
-        if (!isStarted)
+        if (!started)
             return;
 
         paused = !paused;
 
-        if (isPaused)
+        if (paused)
         {
             timer.pause();
             //	tetrisBoard.setStatusText("paused");
