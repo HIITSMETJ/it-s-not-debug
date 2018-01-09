@@ -114,7 +114,7 @@ public class TetrisModel
                 controller.myTimer.Interval = 200;
                 break;
             case 'S':
-                controller.myTimer.Interval = 200;
+                controller.myTimer.Interval = 50;
                 break;
             case 'W':               //spin
                 if (current_block.getBlockShape() != TetrisBlock.Blocks.No_shape && current_block.getBlockShape() != TetrisBlock.Blocks.Square_shape)
@@ -135,6 +135,7 @@ public class TetrisModel
 
     public void eliminateRow()                                                          //Delete while line completed
     {
+
         bool[] isAbleDelete = new bool[(int)constant.BOARD_HEIGHT];
         for (int i = 0; i < (int)constant.BOARD_HEIGHT; i++)
         {
@@ -163,8 +164,35 @@ public class TetrisModel
                 }
             }
         }
+
+        for (int curRow = (int)constant.BOARD_HEIGHT - 1; curRow >= 0; curRow--)
+        {
+            if (!isAbleDelete[curRow])
+            {
+                int counter = 0;
+                for (int k = (int)constant.BOARD_HEIGHT - 1; k > curRow; k--)
+                {
+                    if (isAbleDelete[k])
+                        counter++;
+                }
+                if (counter > 0)
+                {
+                    int moveTo = curRow + counter;
+                    for (int j = 0; j < (int)constant.BOARD_WIDTH; j++)
+                    {
+                        board[moveTo, j] = board[curRow, j];
+                        board[curRow, j] = false;
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < (int)constant.BOARD_HEIGHT; i++)
+            if (isAbleDelete[i]) Score += 10;
+
+        /*
         //算每列要下落幾列，這邊lines[]的意義有點複雜，配合下個for loop看比較好懂
-        int[] lines = new int[(int)constant.BOARD_HEIGHT + 1];
+        int[] lines = new int[(int)constant.BOARD_HEIGHT];
         int count = 0;
         for (int i = (int)constant.BOARD_HEIGHT - 1; i >= 0; i--)
         {
@@ -172,7 +200,7 @@ public class TetrisModel
             {
                 count += 1;
             }
-            lines[i + 1] = count;
+            lines[i] = count;
         }
 
         Score += count * 10;                                        //delete line -> add score
@@ -182,12 +210,13 @@ public class TetrisModel
         {
             for (int j = (int)constant.BOARD_WIDTH - 1; j >= 0; j--)
             {
-                if (i - 1 < 0)
-                    board[i, j] = false;
+                if (i - count < 0)
+                    board[i,j] = false;
                 else
-                    board[i, j] = board[i - lines[i], j];
+                    board[i,j] = oriBoard[i - lines[i],j];
             }
         }
+        */
     }
 
     public int getScore()                                                               //Return score for the display.
@@ -254,7 +283,7 @@ public class TetrisBlock
         //srand(time(NULL));      //Need to change position.
 
         Random random_R = new Random();
-        int random = random_R.Next(1, (int)constant.SHAPE_NUM);
+        int random = random_R.Next(1, (int)constant.SHAPE_NUM + 1);
         Blocks shape = (Blocks)random;
 
         setBlockShape(shape);
