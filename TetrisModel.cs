@@ -1,29 +1,38 @@
 using System;
+using System.Windows.Forms;
+using Tetris;
 enum constant { BOARD_WIDTH = 10, BOARD_HEIGHT = 22, SHAPE_NUM = 7 };
 
 
 public class TetrisModel
 {
-    private bool[,] board = new bool[(int)constant.BOARD_WIDTH, (int)constant.BOARD_HEIGHT];
+    private bool[,] board = new bool[(int)constant.BOARD_HEIGHT, (int)constant.BOARD_WIDTH];
     private bool toBottom = false;
     private bool started = false;
     private bool isGameOver = false;
     private int Score = 0;
     private TetrisBlock current_block;
     private TetrisController controller;
+    private Form1 view;
 
 
-    public TetrisModel(TetrisController controller)
+    public TetrisModel(TetrisController controller, Form1 view)
     {
         this.controller = controller;
+        this.view = view;
+        current_block = new TetrisBlock();
     }
 
 
 
-    public void getBoard(bool[,] viewBoard)
+    public bool[,] getBoard()
     {
-        viewBoard = board;
-        return;
+        return board;
+    }
+
+    public TetrisBlock getBlock()
+    {
+        return current_block;
     }
 
     public void GameAction()      							//Check line after block finished falling.                                                      
@@ -48,8 +57,8 @@ public class TetrisModel
     public void createBlock()                                                           //Create the block
     {
         current_block.randomShape();
-        current_block.set_CurrentX((int)constant.BOARD_WIDTH / 2);
-        current_block.set_CurrentY(1);
+        current_block.set_CurrentX(1);
+        current_block.set_CurrentY((int)constant.BOARD_WIDTH / 2);
 
         if (!tryMove(current_block, current_block.get_CurrentX(), current_block.get_CurrentY()))
         {
@@ -65,20 +74,21 @@ public class TetrisModel
         for (int i = 0; i < 4; i++)
         {
             int x = newX + block.get_X(i);
-            int y = newY + block.get_Y(i);
-            if (board[x, y]) return false;                                              //cannot put curBlock on exist blocks
-            if (x < 0 || x > (int)constant.BOARD_WIDTH || y < 0 || y >= (int)constant.BOARD_HEIGHT)                 //block out of board
+            int y = newY + block.get_Y(i);                                              //cannot put curBlock on exist blocks
+            if (x < 0 || x >= (int)constant.BOARD_HEIGHT || y < 0 || y >= (int)constant.BOARD_WIDTH)                 //block out of board
                 return false;
+            if (board[x, y]) return false;
         }
         current_block = block;
         current_block.set_CurrentX(newX);
         current_block.set_CurrentY(newY);
+        view.changeView(this);
         return true;
     }
 
     public void fall()                                                                  //Block falling per time unit
     {
-        if (!tryMove(current_block, current_block.get_CurrentX(), current_block.get_CurrentY() + 1))
+        if (!tryMove(current_block, current_block.get_CurrentX() + 1, current_block.get_CurrentY()))
         {
             GameAction();
         }
@@ -89,23 +99,30 @@ public class TetrisModel
         switch (control)
         {
             case 'a':               //left
-                if (tryMove(current_block, current_block.get_CurrentX() - 1, current_block.get_CurrentY()))
-                    break;
-                goto case 'd';
+                tryMove(current_block, current_block.get_CurrentX(), current_block.get_CurrentY() - 1);
+                break;
+            case 'A':
+                tryMove(current_block, current_block.get_CurrentX(), current_block.get_CurrentY() - 1);
+                break;
             case 'd':               //right
-                if (tryMove(current_block, current_block.get_CurrentX() + 1, current_block.get_CurrentY()))
-                    break;
-                goto case 's';
+                tryMove(current_block, current_block.get_CurrentX(), current_block.get_CurrentY() + 1);
+                break;
+            case 'D':
+                tryMove(current_block, current_block.get_CurrentX(), current_block.get_CurrentY() + 1);
+                break;
             case 's':               //down+speed
                 controller.myTimer.Interval = 200;
                 break;
-            case ' ':               //spin
+            case 'S':
+                controller.myTimer.Interval = 200;
+                break;
+            case 'W':               //spin
                 if (current_block.getBlockShape() != TetrisBlock.Blocks.No_shape && current_block.getBlockShape() != TetrisBlock.Blocks.Square_shape)
                 {
                     TetrisBlock rotate_test = current_block;
                     rotate_test.rotate();
-                    if (tryMove(rotate_test, rotate_test.get_CurrentX(), rotate_test.get_CurrentY()))
-                        current_block.rotate();
+                    if (tryMove(rotate_test, rotate_test.get_CurrentX(), rotate_test.get_CurrentY())) ;
+                    //current_block.rotate();
                 }
                 break;
         }
@@ -190,7 +207,7 @@ public class TetrisModel
 
     private void clearBoard()
     {
-        Array.Clear(board, 0, (int)constant.BOARD_HEIGHT * (int)constant.BOARD_WIDTH - 1);
+        Array.Clear(board, 0, (int)constant.BOARD_HEIGHT * (int)constant.BOARD_WIDTH);
     }
 };
 
@@ -203,10 +220,10 @@ public class TetrisBlock
     public TetrisBlock()
     {
         int[,] coords = new int[4, 2];
-        int[,,] coord_tables = new int[(int)constant.SHAPE_NUM + 1, 4, 2]
+        coord_table = new int[(int)constant.SHAPE_NUM + 1, 4, 2]
         {
             { { 0, 0},{ 0, 0},{ 0, 0},{ 0, 0} },        //  No_shape
-            { { 0, -1},{ 0, 0},{ 0, 1},{ 0, 2} },        //  Line_shape
+            { { 0,-1},{ 0, 0},{ 0, 1},{ 0, 2} },        //  Line_shape
             { {-1,-1},{ 0,-1},{-1, 0},{ 0, 0} },        //  Square_shape
             { {-1,-1},{-1, 0},{ 0, 0},{ 0, 1} },        //  N-shape
             { { 0,-1},{ 0, 0},{-1, 0},{-1, 1} },        //  MirrorN_shape
@@ -229,6 +246,7 @@ public class TetrisBlock
             coord[i, 0] = coord_table[(int)shape, i, 0];
             coord[i, 1] = coord_table[(int)shape, i, 1];
         }
+
         this.block_shape = shape;
     }
     public void randomShape()                                                                  //Random th shape.
@@ -236,7 +254,7 @@ public class TetrisBlock
         //srand(time(NULL));      //Need to change position.
 
         Random random_R = new Random();
-        int random = random_R.Next(1, (int)constant.SHAPE_NUM + 1);
+        int random = random_R.Next(1, (int)constant.SHAPE_NUM);
         Blocks shape = (Blocks)random;
 
         setBlockShape(shape);
