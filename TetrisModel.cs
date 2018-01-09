@@ -119,7 +119,7 @@ public class TetrisModel
             case 'W':               //spin
                 if (current_block.getBlockShape() != TetrisBlock.Blocks.No_shape && current_block.getBlockShape() != TetrisBlock.Blocks.Square_shape)
                 {
-                    TetrisBlock rotate_test = current_block;
+                    TetrisBlock rotate_test = current_block.blockClone();
                     rotate_test.rotate();
                     if (tryMove(rotate_test, rotate_test.get_CurrentX(), rotate_test.get_CurrentY())) ;
                     //current_block.rotate();
@@ -314,6 +314,24 @@ public class TetrisBlock
             set_X(i, get_Y(i));
             set_Y(i, -tmp);
         }
+    }
+
+    public TetrisBlock blockClone()
+    {
+        TetrisBlock newBlock = new TetrisBlock();
+        newBlock.block_shape = this.block_shape;
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 2; j++)
+            {
+                newBlock.coord[i, j] = this.coord[i, j];
+            }
+        }
+        newBlock.coord_table = this.coord_table;
+        newBlock.Current_X = this.Current_X;
+        newBlock.Current_Y = this.Current_Y;
+
+        return newBlock;
     }
 
     private Blocks block_shape;
