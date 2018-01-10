@@ -6,11 +6,11 @@ public class TetrisController
 {
     public Timer myTimer = new Timer();
     private TetrisModel model;
-    private Form1 view;
+    private TetrisView view;
 
     public TetrisController()
     {
-        view = new Form1(this);
+        view = new B10432008(this);
         model = new TetrisModel(this, view);
         Application.Run(view);
     }
@@ -18,7 +18,7 @@ public class TetrisController
     public void start()
     {
         model.start();
-        myTimer.Interval = 1500;
+        myTimer.Interval = 500;
         myTimer.Enabled = true;
         myTimer.Tick += new EventHandler(myTimer_Tick);
         myTimer.Start();
@@ -45,7 +45,17 @@ public class TetrisController
 
     private void myTimer_Tick(Object myObject, EventArgs myEventArgs)
     {
-        myTimer.Interval = 1500;
+        myTimer.Interval = 500;
         model.fall();
+    }
+
+    [STAThread]
+    static void Main()
+    {
+        Application.EnableVisualStyles();
+        Application.SetCompatibleTextRenderingDefault(false);
+        //Application.Run(new Form1());
+        TetrisController controller = new TetrisController();
+        //controller.start();
     }
 }
