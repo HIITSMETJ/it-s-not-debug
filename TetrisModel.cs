@@ -13,10 +13,10 @@ public class TetrisModel
     private int Score = 0;
     private TetrisBlock current_block;
     private TetrisController controller;
-    private Form1 view;
+    private TetrisView view;
 
 
-    public TetrisModel(TetrisController controller, Form1 view)
+    public TetrisModel(TetrisController controller, TetrisView view)
     {
         this.controller = controller;
         this.view = view;
