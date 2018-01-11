@@ -7,7 +7,6 @@ enum constant { BOARD_WIDTH = 10, BOARD_HEIGHT = 22, SHAPE_NUM = 7 };
 public class TetrisModel
 {
     private bool[,] board = new bool[(int)constant.BOARD_HEIGHT, (int)constant.BOARD_WIDTH];
-    private bool toBottom = false;
     private bool started = false;
     private bool isGameOver = false;
     private int Score = 0;
