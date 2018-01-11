@@ -6,21 +6,22 @@ public class TetrisController
 {
     public Timer myTimer = new Timer();
     private TetrisModel model;
-    private TetrisView view;
+    private Form1 view;
 
     public TetrisController()
     {
-        view = new B10432008(this);
+        view = new Form1(this);
         model = new TetrisModel(this, view);
+        myTimer.Tick += new EventHandler(myTimer_Tick);
         Application.Run(view);
     }
 
     public void start()
     {
+        myTimer.Stop();
         model.start();
         myTimer.Interval = 500;
         myTimer.Enabled = true;
-        myTimer.Tick += new EventHandler(myTimer_Tick);
         myTimer.Start();
         //while (!model.GameOver())
         //{  //讀取user透過鍵盤對方塊下的指令
