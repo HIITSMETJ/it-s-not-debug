@@ -8,16 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SE_Project
+namespace Tetris
 {
-    //public class TetrisView : Form
-    //{
-    //    public virtual void changeView(TetrisModel model) { }
-    //}
-    public class TetrisView : Form
-    {
-        public virtual void changeView(TetrisModel model) { }
-    }
+   
 
     public partial class B10432006 : TetrisView
     {

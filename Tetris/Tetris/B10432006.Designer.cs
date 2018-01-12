@@ -1,4 +1,4 @@
-﻿namespace SE_Project
+﻿namespace Tetris
 {
     partial class B10432006
     {

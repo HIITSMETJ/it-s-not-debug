@@ -70,3 +70,5 @@ C:\Users\tinja\it-s-not-debug\Tetris\Tetris\bin\Debug\Tetris.pdb
 =======
 D:\se\Tetris\Tetris\obj\Debug\Tetris.B10432028.resources
 >>>>>>> 000a4f66e79475f31c9cb9e8bd278b688a34be17
+C:\Users\tinja\it-s-not-debug\Tetris\Tetris\obj\Debug\SE_Project.Gameover.resources
+C:\Users\tinja\it-s-not-debug\Tetris\Tetris\obj\Debug\Tetris.Gameover.resources

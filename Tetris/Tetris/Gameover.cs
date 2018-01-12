@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SE_Project
+namespace Tetris
 {
     public partial class Gameover : Form
     {

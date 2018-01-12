@@ -86,7 +86,6 @@ namespace Tetris
             this.label2.Size = new System.Drawing.Size(246, 30);
             this.label2.TabIndex = 3;
             this.label2.Text = "THIS IS NOT DEBUG";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // LbGO
             // 
