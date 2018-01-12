@@ -1,4 +1,4 @@
-﻿namespace Tetris
+namespace Tetris
 {
     partial class B10432028
     {
@@ -32,6 +32,8 @@
             this.Score = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.LbGO = new System.Windows.Forms.Label();
+            this.LbGO2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // Start
@@ -86,12 +88,38 @@
             this.label2.Text = "THIS IS NOT DEBUG";
             this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
+            // LbGO
+            // 
+            this.LbGO.AutoSize = true;
+            this.LbGO.Font = new System.Drawing.Font("Comic Sans MS", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LbGO.ForeColor = System.Drawing.Color.Red;
+            this.LbGO.Location = new System.Drawing.Point(332, 205);
+            this.LbGO.Name = "LbGO";
+            this.LbGO.Size = new System.Drawing.Size(124, 51);
+            this.LbGO.TabIndex = 4;
+            this.LbGO.Text = "GAME";
+            this.LbGO.Visible = false;
+            // 
+            // LbGO2
+            // 
+            this.LbGO2.AutoSize = true;
+            this.LbGO2.Font = new System.Drawing.Font("Comic Sans MS", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LbGO2.ForeColor = System.Drawing.Color.Red;
+            this.LbGO2.Location = new System.Drawing.Point(395, 260);
+            this.LbGO2.Name = "LbGO2";
+            this.LbGO2.Size = new System.Drawing.Size(148, 51);
+            this.LbGO2.TabIndex = 5;
+            this.LbGO2.Text = "OVER !!";
+            this.LbGO2.Visible = false;
+            // 
             // B10432028
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.ClientSize = new System.Drawing.Size(572, 635);
+            this.Controls.Add(this.LbGO2);
+            this.Controls.Add(this.LbGO);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Score);
@@ -114,6 +142,10 @@
         protected internal System.Windows.Forms.Label Score;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label LbGO;
+        private System.Windows.Forms.Label LbGO2;
     }
 }
+
+
 
