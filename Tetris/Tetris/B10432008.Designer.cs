@@ -104,6 +104,8 @@
             this.Controls.Add(this.Game);
             this.Controls.Add(this.ScoreName);
             this.Controls.Add(this.Start);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "B10432008";
             this.Text = "B10432008";
             this.Load += new System.EventHandler(this.Form1_Load);
