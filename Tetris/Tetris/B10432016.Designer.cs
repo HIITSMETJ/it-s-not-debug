@@ -30,12 +30,10 @@ namespace Tetris
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(B10432016));
             this.start = new System.Windows.Forms.Button();
             this.Label = new System.Windows.Forms.Label();
             this.score = new System.Windows.Forms.Label();
-            this.gg = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.gg)).BeginInit();
+            this.gg = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // start
@@ -78,14 +76,17 @@ namespace Tetris
             // 
             // gg
             // 
-            this.gg.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("gg.BackgroundImage")));
-            this.gg.Location = new System.Drawing.Point(20, 8);
+            this.gg.AutoSize = true;
+            this.gg.BackColor = System.Drawing.SystemColors.ControlText;
+            this.gg.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.gg.Font = new System.Drawing.Font("Consolas", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gg.ForeColor = System.Drawing.Color.Red;
+            this.gg.Location = new System.Drawing.Point(204, 185);
             this.gg.Name = "gg";
-            this.gg.Size = new System.Drawing.Size(164, 383);
-            this.gg.TabIndex = 4;
-            this.gg.TabStop = false;
+            this.gg.Size = new System.Drawing.Size(90, 20);
+            this.gg.TabIndex = 5;
+            this.gg.Text = "GAME OVER!";
             this.gg.Visible = false;
-            this.gg.Click += new System.EventHandler(this.pictureBox1_Click_1);
             // 
             // B10432016
             // 
@@ -97,12 +98,12 @@ namespace Tetris
             this.Controls.Add(this.score);
             this.Controls.Add(this.Label);
             this.Controls.Add(this.start);
+            this.MaximizeBox = false;
             this.Name = "B10432016";
             this.Text = "Tetris_TJ";
             this.Load += new System.EventHandler(this.TetrisView_Load);
             this.Shown += new System.EventHandler(this.TetrisView_Shown);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TetrisView_KeyDown);
-            ((System.ComponentModel.ISupportInitialize)(this.gg)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -122,7 +123,7 @@ namespace Tetris
         private System.Windows.Forms.Button start;
         private System.Windows.Forms.Label Label;
         private System.Windows.Forms.Label score;
-        private System.Windows.Forms.PictureBox gg;
+        private System.Windows.Forms.Label gg;
     }
 }
 

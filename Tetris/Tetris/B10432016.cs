@@ -14,10 +14,9 @@ namespace Tetris
     {
         Graphics graphics;
         TetrisController controller;
-        TetrisModel mymodel;
-        // Create pen.
         Pen whitePen = new Pen(Color.WhiteSmoke,3);
         Pen blackPen = new Pen(Color.Black, 1);
+        Pen azurePen = new Pen(Color.Azure, 2);
         SolidBrush brush = new SolidBrush(Color.Aquamarine);
         SolidBrush cadeBluebrush = new SolidBrush(Color.CadetBlue);
 
@@ -73,18 +72,18 @@ namespace Tetris
             m_Graphics.Graphics.DrawLine(whitePen, 182, 384, 184, 8);
         }
 
-        public void DrawBlock(SolidBrush brush, int i, int j)
+        public void DrawBlock(SolidBrush brush,Pen pen, int i, int j)
         {
             i = i * 17 + 8;
             j = j * 17 + 12;
             m_Graphics.Graphics.FillRectangle(brush, j, i, 17, 17);
+            m_Graphics.Graphics.DrawRectangle(pen, j, i, 17, 17);
              
         }
 
         //public override void changeView(TetrisModel model) 多型覆蓋
         public override void changeView(TetrisModel model)
         {
-            mymodel = model;
             gg.Visible = false;
             m_Graphics.Graphics.Clear(Color.White);
             DrawGameField();
@@ -97,18 +96,19 @@ namespace Tetris
                 {
                     if (board[i, j])
                     {
-                        DrawBlock(cadeBluebrush, i, j);                      
+                        DrawBlock(cadeBluebrush,azurePen, i, j);                      
                     }
                 }
             }
 
             for (int i = 0; i < 4; i++)
             {
-                DrawBlock(brush, current_block.get_CurrentX() + current_block.get_X(i), current_block.get_CurrentY() + current_block.get_Y(i));
+                DrawBlock(brush,azurePen, current_block.get_CurrentX() + current_block.get_X(i), current_block.get_CurrentY() + current_block.get_Y(i));
             }
             m_Graphics.Render();
             score.Text =model.getScore().ToString();
-            
+            if (model.GameOver())
+                gg.Visible = true;
         }
 
         private void start_Click(object sender, EventArgs e)
@@ -119,15 +119,13 @@ namespace Tetris
 
         private void TetrisView_KeyDown(object sender, KeyEventArgs e)
         {
-            if (!mymodel.isStarted())
-                gg.Visible = true;
+           
             controller.keyPress(e.KeyCode.ToString());            
         }
 
-        private void pictureBox1_Click_1(object sender, EventArgs e)
-        {
+       
 
-        }
+     
     }
 
 }

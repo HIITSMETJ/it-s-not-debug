@@ -51,3 +51,18 @@ C:\Users\James\Google 雲端硬碟\筆電同步\軟工\it-s-not-debug\Tetris\Tet
 C:\Users\James\Google 雲端硬碟\筆電同步\軟工\it-s-not-debug\Tetris\Tetris\obj\Debug\Tetris.csproj.CoreCompileInputs.cache
 C:\Users\James\Google 雲端硬碟\筆電同步\軟工\it-s-not-debug\Tetris\Tetris\obj\Debug\Tetris.exe
 C:\Users\James\Google 雲端硬碟\筆電同步\軟工\it-s-not-debug\Tetris\Tetris\obj\Debug\Tetris.pdb
+C:\Users\tinja\it-s-not-debug\Tetris\Tetris\obj\Debug\Tetris.csprojResolveAssemblyReference.cache
+C:\Users\tinja\it-s-not-debug\Tetris\Tetris\obj\Debug\Tetris.B10432006.resources
+C:\Users\tinja\it-s-not-debug\Tetris\Tetris\obj\Debug\Tetris.B10432008.resources
+C:\Users\tinja\it-s-not-debug\Tetris\Tetris\obj\Debug\Tetris.B10432016.resources
+C:\Users\tinja\it-s-not-debug\Tetris\Tetris\obj\Debug\Tetris.B10432017.resources
+C:\Users\tinja\it-s-not-debug\Tetris\Tetris\obj\Debug\Tetris.B10432028.resources
+C:\Users\tinja\it-s-not-debug\Tetris\Tetris\obj\Debug\Tetris.Properties.Resources.resources
+C:\Users\tinja\it-s-not-debug\Tetris\Tetris\obj\Debug\Tetris.TetrisView.resources
+C:\Users\tinja\it-s-not-debug\Tetris\Tetris\obj\Debug\Tetris.csproj.GenerateResource.Cache
+C:\Users\tinja\it-s-not-debug\Tetris\Tetris\obj\Debug\Tetris.csproj.CoreCompileInputs.cache
+C:\Users\tinja\it-s-not-debug\Tetris\Tetris\obj\Debug\Tetris.exe
+C:\Users\tinja\it-s-not-debug\Tetris\Tetris\obj\Debug\Tetris.pdb
+C:\Users\tinja\it-s-not-debug\Tetris\Tetris\bin\Debug\Tetris.exe.config
+C:\Users\tinja\it-s-not-debug\Tetris\Tetris\bin\Debug\Tetris.exe
+C:\Users\tinja\it-s-not-debug\Tetris\Tetris\bin\Debug\Tetris.pdb
