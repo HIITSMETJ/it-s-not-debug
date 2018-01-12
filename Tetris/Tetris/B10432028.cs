@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -107,6 +107,17 @@ namespace Tetris
             drawBackGround();
             bool[,] board = model.getBoard();
             TetrisBlock current_block = model.getBlock();
+            
+            if (model.GameOver())
+            {
+                LbGO.Visible = true;
+                LbGO2.Visible = true;
+            }
+            else
+            {
+                LbGO.Visible = false;
+                LbGO2.Visible = false;
+            }
 
             for (int i = 0; i < 22; i++) 
             {
@@ -134,6 +145,8 @@ namespace Tetris
 
         }
 
+      
+
         //private void InitializeComponent()
         //{
         //    this.SuspendLayout();
@@ -151,3 +164,4 @@ namespace Tetris
     }
 
 }
+
