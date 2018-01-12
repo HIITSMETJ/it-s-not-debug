@@ -10,35 +10,31 @@ using System.Windows.Forms;
 
 namespace Tetris
 {
-    //public class TetrisView : Form
-    //{
-    //    public virtual void changeView(TetrisModel model) { }
-    //}
-
-
-
 
     public partial class B10432028 : TetrisView //TetrisView
     {
+        int iTime = 0;
+        public Timer sTimer = new Timer();
         Graphics graphics;
         TetrisController controller;
         // Create pen.
-        Pen whitePen = new Pen(Color.White, 3);  //畫筆顏色
-        Pen bleakPen= new Pen(Color.Black, 3);    //落下方塊顏色
-        SolidBrush brush = new SolidBrush(Color.Gold);  //筆刷顏色
+        Pen whitePen = new Pen(Color.White, 3);  //畫筆顏色_白 for 已落下的方塊
+        Pen bleakPen = new Pen(Color.Black, 3);   //畫筆顏色_黑 for 落下中的方塊
+        SolidBrush brush = new SolidBrush(Color.Gold);  //筆刷顏色_金 for 方塊內塗色
 
-        //for double buffer
+        //避免破圖 double buffer
         private BufferedGraphicsContext m_CurrentContext;
         private BufferedGraphics m_Graphics;
 
         public B10432028(TetrisController controller)
         {
+            sTimer.Tick += new EventHandler(sTimer_Tick);
             InitializeComponent();
 
-            //get畫布
+            //建立畫布
             graphics = this.CreateGraphics();
 
-            //塗白底
+            //畫布塗白底
             graphics.Clear(Color.White);
 
             //double buffer
@@ -47,13 +43,12 @@ namespace Tetris
 
             drawBackGround();
             this.controller = controller;
-        } 
-
+        }
+        //for double buffer
         protected override void OnPaintBackground(PaintEventArgs e)
         {
 
         }
-
         private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
 
@@ -61,7 +56,7 @@ namespace Tetris
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+
         }
 
         private void Form1_Shown(object sender, EventArgs e)
@@ -74,11 +69,22 @@ namespace Tetris
         private void strat_Click(object sender, EventArgs e)
         {
             controller.start();
+
+            //sTimer.Stop();
+            LbTime.Text = iTime.ToString();
+            sTimer.Interval = 1000;
+            sTimer.Enabled = true;
+            sTimer.Start();
+        }
+        private void sTimer_Tick(Object myObject, EventArgs myEventArgs)
+        {
+            iTime++;
+            LbTime.Text = iTime.ToString();
         }
 
-        public void drawBackGround()                //畫框線
+
+        public void drawBackGround()                //畫框線(game space)
         {
-            // Create points that define line.
             m_Graphics.Graphics.DrawLine(whitePen, 30, 20, 200, 20);  //上
             m_Graphics.Graphics.DrawLine(whitePen, 200, 20, 200, 394);  //右
             m_Graphics.Graphics.DrawLine(whitePen, 200, 394, 30, 394);  //下
@@ -90,26 +96,31 @@ namespace Tetris
             controller.keyPress(e.KeyCode.ToString());
         }
 
-        public void drawBlock(Pen pen, int i, int j)   
+        //畫方塊
+        public void drawBlock(Pen pen, int i, int j)
         {
             i = i * 17 + 20;
             j = j * 17 + 30;
-            m_Graphics.Graphics.FillRectangle(brush, j, i, 17, 17);   //畫方塊
+            m_Graphics.Graphics.FillRectangle(brush, j, i, 17, 17);   //畫實心方塊
             m_Graphics.Graphics.DrawRectangle(pen, j, i, 17, 17);   //畫方塊框線
         }
 
         //public override void changeView(TetrisModel model) 多型覆蓋
         public override void changeView(TetrisModel model)
         {
-            m_Graphics.Graphics.Clear(Color.Black);   
+            m_Graphics.Graphics.Clear(Color.Black);
             drawBackGround();
             bool[,] board = model.getBoard();
             TetrisBlock current_block = model.getBlock();
-            
+
+
+            //取得 GameOver 狀態，並決定是否顯示文字
             if (model.GameOver())
             {
                 LbGO.Visible = true;
                 LbGO2.Visible = true;
+                iTime = 0;
+                sTimer.Enabled = false;
             }
             else
             {
@@ -117,9 +128,9 @@ namespace Tetris
                 LbGO2.Visible = false;
             }
 
-            for (int i = 0; i < 22; i++) 
+            for (int i = 0; i < 22; i++)
             {
-                for (int j = 0; j < 10; j++) 
+                for (int j = 0; j < 10; j++)
                 {
                     if (board[i, j])
                     {
@@ -128,19 +139,18 @@ namespace Tetris
                 }
             }
 
-            for (int i = 0; i < 4; i++) 
+            for (int i = 0; i < 4; i++)
             {
                 drawBlock(bleakPen, current_block.get_CurrentX() + current_block.get_X(i), current_block.get_CurrentY() + current_block.get_Y(i));
 
             }
             m_Graphics.Render();
-            //m_Graphics.Dispose();
             Score.Text = "Score: " + model.getScore().ToString();
         }
 
-        
 
-      
+
+
 
         //private void InitializeComponent()
         //{
@@ -159,6 +169,3 @@ namespace Tetris
     }
 
 }
-
-
-

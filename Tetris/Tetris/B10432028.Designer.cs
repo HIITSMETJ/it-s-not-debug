@@ -34,6 +34,8 @@ namespace Tetris
             this.label2 = new System.Windows.Forms.Label();
             this.LbGO = new System.Windows.Forms.Label();
             this.LbGO2 = new System.Windows.Forms.Label();
+            this.LbTime = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // Start
@@ -42,7 +44,7 @@ namespace Tetris
             this.Start.FlatAppearance.BorderSize = 0;
             this.Start.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Start.Font = new System.Drawing.Font("Comic Sans MS", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Start.Location = new System.Drawing.Point(330, 71);
+            this.Start.Location = new System.Drawing.Point(341, 146);
             this.Start.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Start.Name = "Start";
             this.Start.Size = new System.Drawing.Size(123, 54);
@@ -111,12 +113,36 @@ namespace Tetris
             this.LbGO2.Text = "OVER !!";
             this.LbGO2.Visible = false;
             // 
+            // LbTime
+            // 
+            this.LbTime.AutoSize = true;
+            this.LbTime.Font = new System.Drawing.Font("Comic Sans MS", 18F);
+            this.LbTime.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.LbTime.Location = new System.Drawing.Point(465, 78);
+            this.LbTime.Name = "LbTime";
+            this.LbTime.Size = new System.Drawing.Size(44, 51);
+            this.LbTime.TabIndex = 6;
+            this.LbTime.Text = "0";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Comic Sans MS", 18F);
+            this.label3.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label3.Location = new System.Drawing.Point(332, 78);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(115, 51);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "Time:";
+            // 
             // B10432028
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.ClientSize = new System.Drawing.Size(572, 635);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.LbTime);
             this.Controls.Add(this.LbGO2);
             this.Controls.Add(this.LbGO);
             this.Controls.Add(this.label2);
@@ -143,6 +169,8 @@ namespace Tetris
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label LbGO;
         private System.Windows.Forms.Label LbGO2;
+        private System.Windows.Forms.Label LbTime;
+        private System.Windows.Forms.Label label3;
     }
 }
 
