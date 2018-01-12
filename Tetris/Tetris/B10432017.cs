@@ -23,8 +23,8 @@ namespace Tetris
 		Pen blackPen = new Pen(Color.Black, 3);
 		Pen redPen = new Pen(Color.Red, 3);
 
-		private BufferedGraphicsContext m_CurrentContext;
-		private BufferedGraphics m_Graphics;
+		private BufferedGraphicsContext my_CurrentContext;
+		private BufferedGraphics my_Graphics;
 
 		public Timer viewTimer = new Timer();
 		int time = 0;
@@ -41,8 +41,8 @@ namespace Tetris
 
 			graphics.Clear(Color.White);
 
-			m_CurrentContext = BufferedGraphicsManager.Current;
-			m_Graphics = m_CurrentContext.Allocate(this.CreateGraphics(), this.DisplayRectangle);
+			my_CurrentContext = BufferedGraphicsManager.Current;
+			my_Graphics = my_CurrentContext.Allocate(this.CreateGraphics(), this.DisplayRectangle);
 
 			drawBackGround();
 			this.controller = controller;
@@ -71,8 +71,6 @@ namespace Tetris
 		{
 			graphics.Clear(Color.White);
 			drawBackGround();
-			//drawBlock(170, 20);
-
 		}
 
 
@@ -86,8 +84,8 @@ namespace Tetris
 		public void drawBackGround()
 		{
 
-			m_Graphics.Graphics.DrawRectangle(blackPen, 60, 20, 174, 374);
-			m_Graphics.Graphics.DrawRectangle(blackPen, 51, 11, 192, 392);
+			my_Graphics.Graphics.DrawRectangle(blackPen, 60, 20, 174, 374);
+			my_Graphics.Graphics.DrawRectangle(blackPen, 51, 11, 192, 392);
 		}
 
 		private void Form1_KeyPress(object sender, System.Windows.Forms.KeyEventArgs e)
@@ -99,8 +97,8 @@ namespace Tetris
 		{
 			i = i * 17 + 20;
 			j = j * 17 + 63;
-			m_Graphics.Graphics.DrawRectangle(pen, j, i, 15.5f, 15.5f);
-			m_Graphics.Graphics.FillRectangle(brush, j, i, 15.5f, 15.5f);
+			my_Graphics.Graphics.DrawRectangle(pen, j, i, 15.5f, 15.5f);
+			my_Graphics.Graphics.FillRectangle(brush, j, i, 15.5f, 15.5f);
 		}
 
 		//public override void changeView(TetrisModel model) 多型覆蓋
@@ -112,7 +110,7 @@ namespace Tetris
 				viewTimer.Stop();
 				button1.Text = "restart";
 			}
-			m_Graphics.Graphics.Clear(Color.White);
+			my_Graphics.Graphics.Clear(Color.White);
 			drawBackGround();
 			bool[,] board = model.getBoard();
 			TetrisBlock current_block = model.getBlock();
@@ -159,8 +157,7 @@ namespace Tetris
 				if (!model.GameOver()) drawBlock(whiteBrush, redPen, current_block.get_X(i) + depth - 1, current_block.get_CurrentY() + current_block.get_Y(i));
 				if (!model.GameOver()) drawBlock(yellowBrush, redPen, current_block.get_CurrentX() + current_block.get_X(i), current_block.get_CurrentY() + current_block.get_Y(i));
 			}
-			m_Graphics.Render();
-			//m_Graphics.Dispose();
+			my_Graphics.Render();
 			score.Text = "Score: " + model.getScore().ToString();
 			viewTime.Text= "Time: " + time.ToString();
 		}
