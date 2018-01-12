@@ -23,9 +23,9 @@ namespace Tetris
         Graphics graphics;
         TetrisController controller;
         // Create pen.
-        Pen blackPen = new Pen(Color.White, 3);  //畫筆顏色
-        Pen redPen = new Pen(Color.Black, 3);    //落下方塊顏色
-        SolidBrush brush = new SolidBrush(Color.Gold);  //??
+        Pen whitePen = new Pen(Color.White, 3);  //畫筆顏色
+        Pen bleakPen= new Pen(Color.Black, 3);    //落下方塊顏色
+        SolidBrush brush = new SolidBrush(Color.Gold);  //筆刷顏色
 
         //for double buffer
         private BufferedGraphicsContext m_CurrentContext;
@@ -68,8 +68,6 @@ namespace Tetris
         {
             graphics.Clear(Color.Black);  //起始背景色
             drawBackGround();
-            //drawBlock(170, 20);
-
         }
 
 
@@ -81,10 +79,10 @@ namespace Tetris
         public void drawBackGround()                //畫框線
         {
             // Create points that define line.
-            m_Graphics.Graphics.DrawLine(blackPen, 30, 20, 200, 20);  //上
-            m_Graphics.Graphics.DrawLine(blackPen, 200, 20, 200, 394);  //右
-            m_Graphics.Graphics.DrawLine(blackPen, 200, 394, 30, 394);  //下
-            m_Graphics.Graphics.DrawLine(blackPen, 30, 394, 30, 20);  //左
+            m_Graphics.Graphics.DrawLine(whitePen, 30, 20, 200, 20);  //上
+            m_Graphics.Graphics.DrawLine(whitePen, 200, 20, 200, 394);  //右
+            m_Graphics.Graphics.DrawLine(whitePen, 200, 394, 30, 394);  //下
+            m_Graphics.Graphics.DrawLine(whitePen, 30, 394, 30, 20);  //左
         }
 
         private void Form1_KeyPress(object sender, System.Windows.Forms.KeyEventArgs e)
@@ -92,18 +90,18 @@ namespace Tetris
             controller.keyPress(e.KeyCode.ToString());
         }
 
-        public void drawBlock(Pen pen, int i, int j)   //??
+        public void drawBlock(Pen pen, int i, int j)   
         {
             i = i * 17 + 20;
             j = j * 17 + 30;
             m_Graphics.Graphics.FillRectangle(brush, j, i, 17, 17);   //畫方塊
-            m_Graphics.Graphics.DrawRectangle(pen, j, i, 17, 17);   //畫方塊
+            m_Graphics.Graphics.DrawRectangle(pen, j, i, 17, 17);   //畫方塊框線
         }
 
         //public override void changeView(TetrisModel model) 多型覆蓋
         public override void changeView(TetrisModel model)
         {
-            m_Graphics.Graphics.Clear(Color.Black);   //背景這也要改
+            m_Graphics.Graphics.Clear(Color.Black);   
             drawBackGround();
             bool[,] board = model.getBoard();
             TetrisBlock current_block = model.getBlock();
@@ -125,14 +123,14 @@ namespace Tetris
                 {
                     if (board[i, j])
                     {
-                        drawBlock(blackPen, i, j);
+                        drawBlock(whitePen, i, j);
                     }
                 }
             }
 
             for (int i = 0; i < 4; i++) 
             {
-                drawBlock(redPen, current_block.get_CurrentX() + current_block.get_X(i), current_block.get_CurrentY() + current_block.get_Y(i));
+                drawBlock(bleakPen, current_block.get_CurrentX() + current_block.get_X(i), current_block.get_CurrentY() + current_block.get_Y(i));
 
             }
             m_Graphics.Render();
@@ -140,10 +138,7 @@ namespace Tetris
             Score.Text = "Score: " + model.getScore().ToString();
         }
 
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
+        
 
       
 
@@ -164,4 +159,6 @@ namespace Tetris
     }
 
 }
+
+
 
