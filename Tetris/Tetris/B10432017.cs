@@ -11,139 +11,160 @@ using System.Windows.Forms;
 namespace Tetris
 {
 
-    public partial class B10432017 : TetrisView //TetrisView
-    {
+	public partial class B10432017 : TetrisView //TetrisView
+	{
 
-        Graphics graphics;
-        TetrisController controller;
+		Graphics graphics;
+		TetrisController controller;
 
-        Pen blackPen = new Pen(Color.Black, 3);
-        Pen redPen = new Pen(Color.Red, 3);
-        SolidBrush yellowBrush = new SolidBrush(Color.Yellow);
-        SolidBrush blackBrush = new SolidBrush(Color.Blue);
-        SolidBrush whiteBrush = new SolidBrush(Color.WhiteSmoke);
+		SolidBrush yellowBrush = new SolidBrush(Color.Yellow);
+		SolidBrush blackBrush = new SolidBrush(Color.Blue);
+		SolidBrush whiteBrush = new SolidBrush(Color.WhiteSmoke);
+		Pen blackPen = new Pen(Color.Black, 3);
+		Pen redPen = new Pen(Color.Red, 3);
 
-        private BufferedGraphicsContext m_CurrentContext;
-        private BufferedGraphics m_Graphics;
+		private BufferedGraphicsContext m_CurrentContext;
+		private BufferedGraphics m_Graphics;
 
-        public B10432017(TetrisController controller)
-        {
-            InitializeComponent();
+		public Timer viewTimer = new Timer();
+		int time = 0;
+		private void viewTimer_Tick(Object myObject, EventArgs myEventArgs)
+		{
+			time++;
+		}
 
-            graphics = this.CreateGraphics();
+		public B10432017(TetrisController controller)
+		{
+			InitializeComponent();
 
-            graphics.Clear(Color.White);
+			graphics = this.CreateGraphics();
 
-            m_CurrentContext = BufferedGraphicsManager.Current;
-            m_Graphics = m_CurrentContext.Allocate(this.CreateGraphics(), this.DisplayRectangle);
+			graphics.Clear(Color.White);
 
-            drawBackGround();
-            this.controller = controller;
-        }
+			m_CurrentContext = BufferedGraphicsManager.Current;
+			m_Graphics = m_CurrentContext.Allocate(this.CreateGraphics(), this.DisplayRectangle);
 
-        protected override void OnPaintBackground(PaintEventArgs e)
-        {
-
-        }
-
-        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
-        {
-
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Form1_Shown(object sender, EventArgs e)
-        {
-            graphics.Clear(Color.White);
-            drawBackGround();
-            //drawBlock(170, 20);
-
-        }
+			drawBackGround();
+			this.controller = controller;
+			viewTimer.Enabled = true;
+			viewTimer.Interval = 1000;
+			viewTimer.Tick += new EventHandler(viewTimer_Tick);
+		}
 
 
-        private void strat(object sender, EventArgs e)
-        {
-            controller.start();
-        }
+		protected override void OnPaintBackground(PaintEventArgs e)
+		{
 
-        public void drawBackGround()
-        {
+		}
 
-            m_Graphics.Graphics.DrawRectangle(blackPen, 67, 20, 174, 374);
+		private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+		{
 
-        }
+		}
 
-        private void Form1_KeyPress(object sender, System.Windows.Forms.KeyEventArgs e)
-        {
-            controller.keyPress(e.KeyCode.ToString());
-        }
+		private void Form1_Load(object sender, EventArgs e)
+		{
 
-        public void drawBlock(SolidBrush brush, Pen pen, int i, int j)
-        {
-            i = i * 17 + 20;
-            j = j * 17 + 70;
-            m_Graphics.Graphics.DrawRectangle(pen, j, i, 15.5f, 15.5f);
-            m_Graphics.Graphics.FillRectangle(brush, j, i, 15.5f, 15.5f);
-        }
+		}
 
-        //public override void changeView(TetrisModel model) 多型覆蓋
-        public override void changeView(TetrisModel model)
-        {
-            m_Graphics.Graphics.Clear(Color.White);
-            drawBackGround();
-            bool[,] board = model.getBoard();
-            TetrisBlock current_block = model.getBlock();
+		private void Form1_Shown(object sender, EventArgs e)
+		{
+			graphics.Clear(Color.White);
+			drawBackGround();
+			//drawBlock(170, 20);
 
-            for (int i = 0; i < 22; i++)
-            {
-                for (int j = 0; j < 10; j++)
-                {
-                    if (board[i, j])
-                    {
-                        drawBlock(blackBrush, blackPen, i, j);
-                    }
-                }
-            }
+		}
 
 
-            int depth = 0;
-            bool add = true;
-            while (add)
-            {
-                depth++;
-                for (int i = 0; i < 4; i++)
-                {
-                    //System.Diagnostics.Debug.WriteLine(current_block.get_X(i) + depth);
-                    int h = current_block.get_X(i) + depth;
-                    if (h < 0) h = 0;
-                    if (h > 21) h = 21;
-                    if (board[h, current_block.get_CurrentY() + current_block.get_Y(i)])
-                    {
-                        add = false;
-                    }
-                }
-                if (depth > 21) break;
-            }
+		private void strat(object sender, EventArgs e)
+		{
+			controller.start();
+			button1.Text = "gaming";
+			viewTimer.Start();
+		}
 
-            for (int i = 0; i < 4; i++)
-            {
-                while (current_block.get_X(i) + depth > 22) depth--;
+		public void drawBackGround()
+		{
 
-            }
+			m_Graphics.Graphics.DrawRectangle(blackPen, 60, 20, 174, 374);
+			m_Graphics.Graphics.DrawRectangle(blackPen, 51, 11, 192, 392);
+		}
 
-            for (int i = 0; i < 4; i++)
-            {
-                if (!model.GameOver()) drawBlock(whiteBrush, redPen, current_block.get_X(i) + depth - 1, current_block.get_CurrentY() + current_block.get_Y(i));
-                if (!model.GameOver()) drawBlock(yellowBrush, redPen, current_block.get_CurrentX() + current_block.get_X(i), current_block.get_CurrentY() + current_block.get_Y(i));
-            }
-            m_Graphics.Render();
-            //m_Graphics.Dispose();
-            score.Text = "Score: " + model.getScore().ToString();
-        }
-    }
+		private void Form1_KeyPress(object sender, System.Windows.Forms.KeyEventArgs e)
+		{
+			controller.keyPress(e.KeyCode.ToString());
+		}
+
+		public void drawBlock(SolidBrush brush, Pen pen, int i, int j)
+		{
+			i = i * 17 + 20;
+			j = j * 17 + 63;
+			m_Graphics.Graphics.DrawRectangle(pen, j, i, 15.5f, 15.5f);
+			m_Graphics.Graphics.FillRectangle(brush, j, i, 15.5f, 15.5f);
+		}
+
+		//public override void changeView(TetrisModel model) 多型覆蓋
+		public override void changeView(TetrisModel model)
+		{
+			if (model.GameOver())
+			{
+				time = 0;
+				viewTimer.Stop();
+				button1.Text = "restart";
+			}
+			m_Graphics.Graphics.Clear(Color.White);
+			drawBackGround();
+			bool[,] board = model.getBoard();
+			TetrisBlock current_block = model.getBlock();
+
+			for (int i = 0; i < 22; i++)
+			{
+				for (int j = 0; j < 10; j++)
+				{
+					if (board[i, j])
+					{
+						drawBlock(blackBrush, blackPen, i, j);
+					}
+				}
+			}
+
+
+			int depth = 0;
+			bool add = true;
+			while (add)
+			{
+				depth++;
+				for (int i = 0; i < 4; i++)
+				{
+					//System.Diagnostics.Debug.WriteLine(current_block.get_X(i) + depth);
+					int h = current_block.get_X(i) + depth;
+					if (h < 0) h = 0;
+					if (h > 21) h = 21;
+					if (board[h, current_block.get_CurrentY() + current_block.get_Y(i)])
+					{
+						add = false;
+					}
+				}
+				if (depth > 21) break;
+			}
+
+			for (int i = 0; i < 4; i++)
+			{
+				while (current_block.get_X(i) + depth > 22) depth--;
+
+			}
+
+			for (int i = 0; i < 4; i++)
+			{
+				if (!model.GameOver()) drawBlock(whiteBrush, redPen, current_block.get_X(i) + depth - 1, current_block.get_CurrentY() + current_block.get_Y(i));
+				if (!model.GameOver()) drawBlock(yellowBrush, redPen, current_block.get_CurrentX() + current_block.get_X(i), current_block.get_CurrentY() + current_block.get_Y(i));
+			}
+			m_Graphics.Render();
+			//m_Graphics.Dispose();
+			score.Text = "Score: " + model.getScore().ToString();
+			viewTime.Text= "Time: " + time.ToString();
+		}
+
+	}
 
 }
