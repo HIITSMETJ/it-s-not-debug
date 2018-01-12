@@ -8,22 +8,33 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Tetris
+namespace SE_Project
 {
-    
+    //public class TetrisView : Form
+    //{
+    //    public virtual void changeView(TetrisModel model) { }
+    //}
+    public class TetrisView : Form
+    {
+        public virtual void changeView(TetrisModel model) { }
+    }
 
-    public partial class B10432006: TetrisView
+    public partial class B10432006 : TetrisView
     {
         Graphics graphics;
         TetrisController controller;
         // Create pen.
         Pen board_Pen = new Pen(Color.DarkBlue, 3);
         Pen current_Pen = new Pen(Color.BlanchedAlmond, 3);
+        Pen preview_Pen = new Pen(Color.LightSteelBlue, 3);
         SolidBrush board_brush = new SolidBrush(Color.DarkBlue);
         SolidBrush current_brush = new SolidBrush(Color.BlanchedAlmond);
+        SolidBrush preview_brush = new SolidBrush(Color.LightSteelBlue);
         //for double buffer
         private BufferedGraphicsContext m_CurrentContext;
         private BufferedGraphics m_Graphics;
+
+        TetrisModel mymodel;
 
         public B10432006(TetrisController controller)
         {
@@ -51,15 +62,9 @@ namespace Tetris
 
         private void scoreBox_TextChanged(object sender, EventArgs e)
         {
-     
+
         }
 
-        //Form frm = new Gameover();
-
-      /*  private void B10432006_Load(object sender, EventArgs e)
-        {
-
-        }*/
 
         public void drawBackGround()
         {
@@ -79,7 +84,6 @@ namespace Tetris
         {
             i = i * 17 + 90;
             j = j * 17 + 100;
-            // m_Graphics.Graphics.DrawRectangle(pen, j, i, 17, 17);
             m_Graphics.Graphics.FillRectangle(brush, new Rectangle(j, i, 17, 17));
         }
 
@@ -88,45 +92,40 @@ namespace Tetris
         {
             m_Graphics.Graphics.Clear(Color.SkyBlue);
             drawBackGround();
+            mymodel = model;
             bool[,] board = model.getBoard();
             TetrisBlock current_block = model.getBlock();
 
-            for (int i = 0; i < 22; i++)
+            if (current_block.getBlockShape() != TetrisBlock.Blocks.No_shape)
             {
-                for (int j = 0; j < 10; j++)
+                for (int i = 0; i < 22; i++)
                 {
-                    if (board[i, j])
+                    for (int j = 0; j < 10; j++)
                     {
-                        drawBlock(board_Pen, board_brush, i, j);
+                        if (board[i, j])
+                        {
+                            drawBlock(board_Pen, board_brush, i, j);
+                        }
                     }
                 }
+
+                for (int i = 0; i < 4; i++)
+                {
+                    drawBlock(current_Pen, current_brush, current_block.get_CurrentX() + current_block.get_X(i), current_block.get_CurrentY() + current_block.get_Y(i));
+                   
+                }
+
+                m_Graphics.Render();
+                //m_Graphics.Dispose();
+                scoreBox.Text = model.getScore().ToString();
+                   
             }
 
-            for (int i = 0; i < 4; i++)
+            if (mymodel.GameOver())
             {
-                drawBlock(current_Pen, current_brush, current_block.get_CurrentX() + current_block.get_X(i), current_block.get_CurrentY() + current_block.get_Y(i));
+                Gameover gameover_form = new Gameover();
+                gameover_form.Show(this);
             }
-            m_Graphics.Render();
-            //m_Graphics.Dispose();
-            scoreBox.Text = model.getScore().ToString();
         }
-
-        private void B10432006_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        /*      private void InitializeComponent()
-              {
-                  this.SuspendLayout();
-                  // 
-                  // B10432006
-                  // 
-                  this.ClientSize = new System.Drawing.Size(282, 253);
-                  this.Name = "B10432006";
-                  this.Load += new System.EventHandler(this.B10432006_Load);
-                  this.ResumeLayout(false);
-
-              }*/
     }
 }
