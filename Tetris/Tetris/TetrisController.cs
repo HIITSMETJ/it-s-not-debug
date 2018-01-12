@@ -11,7 +11,7 @@ public class TetrisController
     public TetrisController()
     {
         //整個程式換view時唯一需要改的地方
-        view = new B10432017(this);
+        view = new B10432008(this);
         
         model = new TetrisModel(this, view);
         myTimer.Tick += new EventHandler(myTimer_Tick);
@@ -20,11 +20,14 @@ public class TetrisController
 
     public void start()
     {
-        myTimer.Stop();
-        model.start();
-        myTimer.Interval = 500;
-        myTimer.Enabled = true;
-        myTimer.Start();
+        if (!model.isStarted())
+        {
+            myTimer.Stop();
+            model.start();
+            myTimer.Interval = 500;
+            myTimer.Enabled = true;
+            myTimer.Start();
+        }
         //while (!model.GameOver())
         //{  //讀取user透過鍵盤對方塊下的指令
         //    if (Console.KeyAvailable)
@@ -48,8 +51,11 @@ public class TetrisController
 
     private void myTimer_Tick(Object myObject, EventArgs myEventArgs)
     {
-        myTimer.Interval = 500;
-        model.fall();
+        if (model.isStarted())
+        {
+            myTimer.Interval = 500;
+            model.fall();
+        }
     }
 
     [STAThread]

@@ -10,7 +10,7 @@ public class TetrisController
 
     public TetrisController()
     {
-        view = new b10432008(this);
+        view = new b10432016(this);
         //整個程式換view時唯一需要改的地方
         model = new TetrisModel(this, view);
         myTimer.Tick += new EventHandler(myTimer_Tick);

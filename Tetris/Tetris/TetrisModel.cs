@@ -43,6 +43,7 @@ public class TetrisModel
     public void start()                                                                 //Start the game.
     {
         started = true;
+        isGameOver = false;
         Score = 0;
         clearBoard();
         createBlock();
@@ -64,6 +65,7 @@ public class TetrisModel
             current_block.setBlockShape(TetrisBlock.Blocks.No_shape);
             started = false;
             isGameOver = true;
+            view.changeView(this);
         }
 
     }
