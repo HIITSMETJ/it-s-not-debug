@@ -68,6 +68,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="B10432017.Designer.cs" />
+    <Compile Include="B10432028.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="B10432028.Designer.cs">
+      <DependentUpon>B10432028.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TetrisController.cs" />
     <Compile Include="TetrisModel.cs" />
@@ -84,6 +90,9 @@
       <DependentUpon>B10432016.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="B10432017.resx" />
+    <EmbeddedResource Include="B10432028.resx">
+      <DependentUpon>B10432028.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
