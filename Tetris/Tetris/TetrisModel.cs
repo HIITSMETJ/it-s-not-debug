@@ -122,8 +122,7 @@ public class TetrisModel
                 {
                     TetrisBlock rotate_test = current_block.blockClone();
                     rotate_test.rotate();
-                    if (tryMove(rotate_test, rotate_test.get_CurrentX(), rotate_test.get_CurrentY())) ;
-                    //current_block.rotate();
+                    tryMove(rotate_test, rotate_test.get_CurrentX(), rotate_test.get_CurrentY()) ;
                 }
                 break;
         }
@@ -321,21 +320,7 @@ public class TetrisBlock
     {
         return coord[index, 1];
     }
-    /* Not yet used.
-    int min_X()
-    {
-        int minX = coord[0][0];
-        for (size_t i = 0; i < 4; i++)
-            minX = min(minX, coord[i][0]);
-        return minX;
-    }
-    int min_Y()
-    {
-        int minY = coord[0][1];
-        for (size_t i = 0; i < 4; i++)
-            minY = min(minY, coord[i][1]);
-        return minY;
-    }*/
+
     public void rotate()                                                                       //Rotate block.
     {
         for (int i = 0; i < 4; i++)
