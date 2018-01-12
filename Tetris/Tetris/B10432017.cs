@@ -16,11 +16,11 @@ namespace Tetris
 
         Graphics graphics;
         TetrisController controller;
-        // Create pen.
+
         Pen blackPen = new Pen(Color.Black, 3);
         Pen redPen = new Pen(Color.Red, 3);
         SolidBrush yellowBrush = new SolidBrush(Color.Yellow);
-        SolidBrush blackBrush = new SolidBrush(Color.Black);
+        SolidBrush blackBrush = new SolidBrush(Color.Blue);
         SolidBrush whiteBrush = new SolidBrush(Color.WhiteSmoke);
 
         private BufferedGraphicsContext m_CurrentContext;
@@ -72,12 +72,9 @@ namespace Tetris
 
         public void drawBackGround()
         {
-            // Create points that define line.
+
             m_Graphics.Graphics.DrawRectangle(blackPen, 67, 20, 174, 374);
-            //m_Graphics.Graphics.DrawLine(blackPen, 170, 20, 340, 20);
-            //m_Graphics.Graphics.DrawLine(blackPen, 340, 20, 340, 394);
-            //m_Graphics.Graphics.DrawLine(blackPen, 340, 394, 170, 394);
-            //m_Graphics.Graphics.DrawLine(blackPen, 170, 394, 170, 20);
+
         }
 
         private void Form1_KeyPress(object sender, System.Windows.Forms.KeyEventArgs e)
@@ -145,7 +142,7 @@ namespace Tetris
             }
             m_Graphics.Render();
             //m_Graphics.Dispose();
-            //Score.Text = "Score: " + model.getScore().ToString();
+            score.Text = "Score: " + model.getScore().ToString();
         }
     }
 
