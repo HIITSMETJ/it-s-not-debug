@@ -1,4 +1,4 @@
-C:\Users\tinja\OneDrive\course data\106-1\Software Engineering\project\Tetris\Tetris\obj\Debug\Tetris.csprojResolveAssemblyReference.cache
+﻿C:\Users\tinja\OneDrive\course data\106-1\Software Engineering\project\Tetris\Tetris\obj\Debug\Tetris.csprojResolveAssemblyReference.cache
 C:\Users\tinja\OneDrive\course data\106-1\Software Engineering\project\Tetris\Tetris\obj\Debug\Tetris.Properties.Resources.resources
 C:\Users\tinja\OneDrive\course data\106-1\Software Engineering\project\Tetris\Tetris\obj\Debug\Tetris.csproj.GenerateResource.Cache
 C:\Users\tinja\OneDrive\course data\106-1\Software Engineering\project\Tetris\Tetris\obj\Debug\Tetris.csproj.CoreCompileInputs.cache
@@ -51,7 +51,7 @@ C:\Users\James\Google 雲端硬碟\筆電同步\軟工\it-s-not-debug\Tetris\Tet
 C:\Users\James\Google 雲端硬碟\筆電同步\軟工\it-s-not-debug\Tetris\Tetris\obj\Debug\Tetris.csproj.CoreCompileInputs.cache
 C:\Users\James\Google 雲端硬碟\筆電同步\軟工\it-s-not-debug\Tetris\Tetris\obj\Debug\Tetris.exe
 C:\Users\James\Google 雲端硬碟\筆電同步\軟工\it-s-not-debug\Tetris\Tetris\obj\Debug\Tetris.pdb
-<<<<<<< HEAD
+
 C:\Users\tinja\it-s-not-debug\Tetris\Tetris\obj\Debug\Tetris.csprojResolveAssemblyReference.cache
 C:\Users\tinja\it-s-not-debug\Tetris\Tetris\obj\Debug\Tetris.B10432006.resources
 C:\Users\tinja\it-s-not-debug\Tetris\Tetris\obj\Debug\Tetris.B10432008.resources
